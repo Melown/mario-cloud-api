@@ -15,9 +15,9 @@ appId:
   required: true
   type: string
 
-appIdentifyier:
+appIdentifier:
   in: path
-  name: appIdentifyier
+  name: appIdentifier
   description: 'Application-ID for a certain map.'
   required: true
   type: string
@@ -47,6 +47,20 @@ userId:
   in: path
   name: userId
   description: 'ID of the user.'
+  required: true
+  type: integer
+
+mapConfigId:
+  in: path
+  name: mapConfigId
+  description: 'ID of a map.'
+  required: true
+  type: integer
+
+resourceId:
+  in: path
+  name: resourceId
+  description: 'ID of a resource.'
   required: true
   type: integer
 
@@ -122,13 +136,48 @@ newMapConfig:
         description: 'Description for the map.'
       rotation:
         type: number
-        description: 'Intital rotation.'
+        description: 'Initial rotation.'
       position:
         type: string
-        description: 'Intitial position.'
+        description: 'Initial position.'
       flag_example:
         type: boolean
         description: 'If true, this map will become a publically available example.'
+
+updateMapConfig:
+  in: body
+  name: updateMapConfig
+  description: 'Data for updating a map.'
+  required: true
+  schema:
+    type: object
+    properties:
+      name:
+        type: string
+        description: 'Name of the map.'
+      title:
+        type: string
+        description: 'Title of the map.'
+      description:
+        type: string
+        description: 'Description for the map.'
+      rotation:
+        type: number
+        description: 'New rotation.'
+      position:
+        type: string
+        description: 'New position.'
+      flag_example:
+        type: boolean
+        description: 'If true, this map will become a publically available example.
+          This can be changed only by superadmins.'
+      resources:
+        type: array
+        description: 'Complete list of resource-IDs for this map. When given, existing
+          resources will be replaced.'
+        items:
+          type: integer
+          description: Resouce-ID.
 
 newInvitation:
   type: object
@@ -157,4 +206,22 @@ newDataset:
     type:
       type: string
       description: Type of dataset.
+
+updateResource:
+  in: body
+  name: updateResource
+  description: 'Data for updating a resource.'
+  required: true
+  schema:
+    type: object
+    properties:
+      name:
+        type: string
+        description: 'Name of the map.'
+      caption:
+        type: string
+        description: 'Title of the map.'
+      description:
+        type: string
+        description: 'Description for the map.'
 

@@ -70,3 +70,36 @@ Resource:
       format: date-time
       description: dateTime when this resource was last modified.
 
+#-------------------------------------------------------------------------------
+# ResourceList
+ResourceList:
+  type: array
+  items:
+    $ref: '#/Resource'
+
+#-------------------------------------------------------------------------------
+# ResourceInMap
+ResourceInMap:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: Numeric ID of this map.
+    name:
+      type: string
+      description: Name of this map.
+    isWorkingCopy:
+      type: boolean
+      description: True if this is a working-copy.
+
+#-------------------------------------------------------------------------------
+# References for dataset
+Resource.References:
+  type: object
+  description: 'Result for a resource. Key is the resource-ID.'
+  additionalProperties:
+    type: array
+    description: 'List of maps.'
+    items:
+      $ref: '#/ResourceInMap'
+

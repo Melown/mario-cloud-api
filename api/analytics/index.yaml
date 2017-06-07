@@ -10,7 +10,7 @@ updateddatasets:
     - $ref: '../parameters.yaml#/page'
   get:
     tags:
-      - 'Updated datasets'
+      - 'Analytics'
     summary: 'Returns a list of datasets ordered by last update.'
     responses:
       200:
@@ -30,7 +30,7 @@ updatedmaps:
     - $ref: '../parameters.yaml#/page'
   get:
     tags:
-      - 'Updated maps'
+      - 'Analytics'
     summary: 'Returns a list of maps ordered by last update.'
     responses:
       200:

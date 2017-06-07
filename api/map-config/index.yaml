@@ -30,6 +30,107 @@ listMapConfigs:
           type: object
           properties:
             body:
-              $ref: 'definitions.yaml#/MapDetail.MapConfig'
+              $ref: 'definitions.yaml#/MapConfig'
       400:
         $ref: '../responses.yaml#/400'
+
+# get, put, delete
+getPutDelete:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/mapConfigId'
+  get:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Returns a single map-configuration.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/MapConfig'
+  put:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Updates an existing map.'
+    parameters:
+      - $ref: '../parameters.yaml#/updateMapConfig'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/MapConfig'
+      400:
+        $ref: '../responses.yaml#/400'
+  delete:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Deletes a map-configuration.'
+    responses:
+      204:
+        $ref: '../responses.yaml#/204'
+      404:
+        $ref: '../responses.yaml#/404'
+
+# glues - get status
+glueStatus:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/mapConfigId'
+  get:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Returns the status of an ongoing merge-operation.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/GlueStatus'
+
+# glues - plan
+gluePlan:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/mapConfigId'
+  get:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Posts a task for calculating glue-layers.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/MapConfig'
+
+# glues - progress
+glueProgress:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/mapConfigId'
+  get:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Returns the progress of an ongoing merge-operation.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/GlueStatus'

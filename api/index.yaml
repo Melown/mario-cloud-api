@@ -5,7 +5,7 @@ info:
   description: 'Mario console-API.'
 schemes:
   - https
-host: www.melown.com
+host: www.test.mlwn.se
 basePath: /cloud/backend/api
 consumes:
   - 'application/json'
@@ -18,32 +18,32 @@ tags:
   - name: Account
     description: Account-related data.
 
-  - name: Invitation
-    description: Invitations in an account.
-
   - name: Account-User
     description: User in an account.
 
   - name: Dataset
     description: Datasets.
 
-  - name: 'Updated datasets'
-    description: Recently updated datasets.
-
-  - name: 'Updated maps'
-    description: Recently updated maps.
+  - name: Invitation
+    description: Invitations in an account.
 
   - name: 'Map-Application'
     description: Application for a certain map.
 
   - name: 'Map-Configuration'
-    description: Configuration for a certain map.
+    description: Maps.
 
   - name: 'Reference frame'
     description: List of reference frames.
 
+  - name: 'Resources'
+    description: Resources.
+
   - name: 'Resource category'
     description: List of resource categories.
+
+  - name: 'Analytics'
+    description: Statistics about recent updates.
 
   - name: 'User profile'
     description: "The current user's profile."
@@ -91,7 +91,7 @@ paths:
   #-----------------------------------------------------------------------------
   # Application
   # get
-  '/application/{appIdentifyier}':
+  '/application/{appIdentifier}':
     $ref: 'application/index.yaml#/getApplication'
 
   #-----------------------------------------------------------------------------
@@ -118,8 +118,25 @@ paths:
 
   #-----------------------------------------------------------------------------
   # Map-config
+  # list
   '/map_config':
     $ref: 'map-config/index.yaml#/listMapConfigs'
+
+  # get, put, delete
+  '/map_config/{mapConfigId}':
+    $ref: 'map-config/index.yaml#/getPutDelete'
+
+  # glues - get status
+  '/map_config/{mapConfigId}/glue/status':
+    $ref: 'map-config/index.yaml#/glueStatus'
+
+  # glues - plan
+  '/map_config/{mapConfigId}/glue/plan':
+    $ref: 'map-config/index.yaml#/gluePlan'
+
+  # glues - progress
+  '/map_config/{mapConfigId}/glue/progress':
+    $ref: 'map-config/index.yaml#/glueProgress'
 
   #-----------------------------------------------------------------------------
   # reference frame
@@ -135,6 +152,17 @@ paths:
 
   #-----------------------------------------------------------------------------
   # resource
+  # list
+  '/resource':
+    $ref: 'resource/index.yaml#/listResources'
+
+  # get, put, delete
+  '/resource/{resourceId}':
+    $ref: 'resource/index.yaml#/getPutDelete'
+
+  # get references
+  '/resource/{resourceId}/references':
+    $ref: 'resource/index.yaml#/references'
 
   #-----------------------------------------------------------------------------
   # profile

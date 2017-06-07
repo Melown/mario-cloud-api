@@ -1,0 +1,91 @@
+#-----------------------------------------------------------------------------
+# Map-config
+# list
+listResources:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - in: query
+      name: reference_frame
+      description: 'Limit result to a certain reference frame.'
+      required: false
+      type: string
+    - in: query
+      name: account
+      description: 'Limit result to a certain account.'
+      required: false
+      type: integer
+  get:
+    tags:
+      - 'Resources'
+    summary: 'Returns a list of resources this user has access to.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/ResourceList'
+
+# get, put, delete
+getPutDelete:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/resourceId'
+  get:
+    tags:
+      - 'Resources'
+    summary: 'Returns a single resource.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Resource'
+  put:
+    tags:
+      - 'Resources'
+    summary: 'Updates an existing resource.'
+    parameters:
+      - $ref: '../parameters.yaml#/updateResource'
+    responses:
+      204:
+        $ref: '../responses.yaml#/204'
+      404:
+        $ref: '../responses.yaml#/404'
+  delete:
+    tags:
+      - 'Resources'
+    summary: 'Deletes a resource.'
+    responses:
+      204:
+        $ref: '../responses.yaml#/204'
+      404:
+        $ref: '../responses.yaml#/404'
+
+#-------------------------------------------------------------------------------
+# get references
+references:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/resourceId'
+  get:
+    tags:
+      - 'Resources'
+    summary: 'Returns maps referencing this resource.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Resource.References'
+      404:
+        $ref: '../responses.yaml#/404'
+

@@ -96,7 +96,7 @@ MapConfigList:
 
 #-------------------------------------------------------------------------------
 # MapConfig in single map route
-MapDetail.MapConfig:
+MapConfig:
   type: object
   allOf:
     - $ref: '#/MapConfigDetailsResources'
@@ -109,3 +109,22 @@ MapDetail.MapConfig:
         working:
             $ref: '#/MapConfigDetailsResources'
 
+#-------------------------------------------------------------------------------
+# merge-status
+MergeStatus:
+  type: object
+  properties:
+    status:
+      type: string
+      enum: [underway, complete, uninitialized]
+      description: Status of the merge operation.
+
+#-------------------------------------------------------------------------------
+# merge-status for a map
+GlueStatus:
+  type: object
+  properties:
+    original:
+      $ref: '#/MergeStatus'
+    workingCopy:
+      $ref: '#/MergeStatus'

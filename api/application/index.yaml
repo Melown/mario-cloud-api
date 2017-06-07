@@ -7,7 +7,7 @@ getApplication:
     - $ref: '../parameters.yaml#/appId'
   get:
     parameters:
-      - $ref: '../parameters.yaml#/appIdentifyier'
+      - $ref: '../parameters.yaml#/appIdentifier'
     tags:
       - 'Map-Application'
     summary: 'Returns meta-info about a map(application).'
