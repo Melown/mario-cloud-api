@@ -1,0 +1,198 @@
+#===============================================================================
+# Account
+
+#-------------------------------------------------------------------------------
+# get
+accountGet:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/accountId'
+  get:
+    tags:
+      - Account
+    summary: 'Returns some data about the account. If the user is not a member, only
+      basic information is returned (see the AccountLimited-model).'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/AccountFull'
+      404:
+        $ref: 'responses.yaml#/404'
+  put:
+    tags:
+      - Account
+    summary: Updates the account. This is allowed only to account-admins.
+    parameters:
+      - name: account
+        in: body
+        description: 'Updated account object'
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: New account name
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      400:
+        $ref: 'responses.yaml#/400'
+
+#-----------------------------------------------------------------------------
+# Account-user
+accountUser:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/accountId'
+    - $ref: 'parameters.yaml#/userId'
+  post:
+    tags:
+      - Account-User
+    summary: Adds a user to an account.
+    parameters:
+      - $ref: 'parameters.yaml#/userData'
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      400:
+        $ref: 'responses.yaml#/400'
+      409:
+        $ref: 'responses.yaml#/409'
+  put:
+    tags:
+      - Account-User
+    summary: Adds an invitation from an account.
+    parameters:
+      - $ref: 'parameters.yaml#/userData'
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      400:
+        $ref: 'responses.yaml#/400'
+      404:
+        $ref: 'responses.yaml#/404'
+      409:
+        $ref: 'responses.yaml#/409'
+  delete:
+    tags:
+      - Account-User
+    summary: Deletes a user from an account.
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      400:
+        $ref: 'responses.yaml#/400'
+      404:
+        $ref: 'responses.yaml#/404'
+      409:
+        $ref: 'responses.yaml#/409'
+
+#-----------------------------------------------------------------------------
+# Account-invitation
+
+# resend
+accountInvitationResend:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/accountId'
+    - $ref: 'parameters.yaml#/invitationId'
+  get:
+    tags:
+      - Invitation
+    summary: (Re)sends an invitation to an account.
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      404:
+        $ref: 'responses.yaml#/404'
+
+# Create
+accountInvitationCreate:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/accountId'
+  post:
+    parameters:
+      - name: invitation
+        in: body
+        description: 'Invitation object'
+        schema:
+          $ref: 'definitions.yaml#/NewInvitation'
+    tags:
+      - Invitation
+    summary: Adds a new invitation to an account.
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      404:
+        $ref: 'responses.yaml#/404'
+
+# Delete
+accountInvitationDelete:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/accountId'
+    - $ref: 'parameters.yaml#/invitationId'
+  delete:
+    tags:
+      - Invitation
+    summary: Deletes an invitation from an account.
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      404:
+        $ref: 'responses.yaml#/404'
+
+#-----------------------------------------------------------------------------
+# Account-dataset
+
+# Get list
+accountDatasetGet:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/accountId'
+  get:
+    tags:
+      - Dataset
+    summary: A list of datasets belonging to this account.
+    responses:
+      200:
+        description: Result.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Account.Datasets'
+
+# add new
+  post:
+    tags:
+      - Dataset
+    summary: Add a new dataset to account.
+    parameters:
+      - name: dataset
+        in: body
+        description: 'Dataset object'
+        schema:
+          $ref: 'definitions.yaml#/NewDataset'
+    responses:
+      200:
+        description: Result.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Dataset'
+
+

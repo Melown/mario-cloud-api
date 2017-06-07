@@ -1,0 +1,219 @@
+swagger: '2.0'
+info:
+  title: Mario Console
+  version: '0.1.0'
+  description: 'Mario console-API.'
+schemes:
+  - https
+host: www.melown.com
+basePath: /cloud/backend/api
+consumes:
+  - 'application/json'
+produces:
+  - 'application/json'
+
+#===============================================================================
+# tags
+tags:
+- name: Account
+  description: Account-related data.
+- name: Invitation
+  description: Invitations in an account.
+- name: Account-User
+  description: User in an account.
+- name: Dataset
+  description: Datasets.
+- name: 'Updated datasets'
+  description: Recently updated datasets.
+- name: 'Updated maps'
+  description: Recently updated maps.
+- name: 'Map-Application'
+  description: Application for a certain map.
+- name: 'Reference frame'
+  description: List of reference frames.
+- name: 'Resource category'
+  description: List of resource categories.
+- name: 'User profile'
+  description: "The current user's profile."
+
+
+#===============================================================================
+# Paths
+paths:
+  #-----------------------------------------------------------------------------
+  # Account
+
+  # get
+  '/account/{accountId}':
+    $ref: 'account.yaml#/accountGet'
+
+  # Account-user: add, update, delete
+  '/account/{accountId}/user/{userId}':
+    $ref: 'account.yaml#/accountUser'
+
+  # Account-invitation: resend
+  '/account/{accountId}/invitation/{invitationId}/resend':
+    $ref: 'account.yaml#/accountInvitationResend'
+
+  # Create
+  '/account/{accountId}/invitation':
+    $ref: 'account.yaml#/accountInvitationCreate'
+
+  # Delete
+  '/account/{accountId}/invitation/{invitationId}':
+    $ref: 'account.yaml#/accountInvitationDelete'
+
+  # Get datasets
+  '/account/{accountId}/dataset':
+    $ref: 'account.yaml#/accountDatasetGet'
+
+  #-----------------------------------------------------------------------------
+  # Analytics
+
+  # get updated datasets
+  '/analytics/updateddatasets':
+    $ref: 'analytics.yaml#/updateddatasets'
+
+  # get updated maps
+  '/analytics/updatedmaps':
+    $ref: 'analytics.yaml#/updatedmaps'
+
+  #-----------------------------------------------------------------------------
+  # Application
+
+  # get
+  '/application/{appIdentifyier}':
+    parameters:
+      - $ref: 'parameters.yaml#/accessToken'
+      - $ref: 'parameters.yaml#/appId'
+    get:
+      parameters:
+        - $ref: 'parameters.yaml#/appIdentifyier'
+      tags:
+        - 'Map-Application'
+      summary: 'Returns meta-info about a map(application).'
+      responses:
+        200:
+          description: Operation successful.
+          schema:
+            type: object
+            properties:
+              body:
+                $ref: 'definitions.yaml#/MapApplication'
+        404:
+          $ref: 'responses.yaml#/404'
+
+  #-----------------------------------------------------------------------------
+  # Dataset
+
+  # get, put, delete
+  '/dataset/{datasetId}':
+    $ref: 'dataset.yaml#/getPutDelete'
+
+  # get duplicate
+  '/dataset/{datasetId}/duplicate':
+    $ref: 'dataset.yaml#/duplicate'
+
+  # get cancel
+  '/dataset/{datasetId}/cancel':
+    $ref: 'dataset.yaml#/cancel'
+
+  # get references
+  '/dataset/{datasetId}/references':
+    $ref: 'dataset.yaml#/references'
+
+  # post export
+  '/dataset/{datasetId}/export':
+    $ref: 'dataset.yaml#/export'
+
+  #-----------------------------------------------------------------------------
+  # Map-config
+
+  #-----------------------------------------------------------------------------
+  # reference frame
+
+  # get
+  '/reference_frame':
+    parameters:
+      - $ref: 'parameters.yaml#/accessToken'
+      - $ref: 'parameters.yaml#/appId'
+    get:
+      tags:
+        - Reference frame
+      summary: 'Get a list of reference frames.'
+      responses:
+        200:
+          description: Operation successful.
+          schema:
+            type: object
+            properties:
+              body:
+                $ref: 'definitions.yaml#/ReferenceFrameList'
+
+  #-----------------------------------------------------------------------------
+  # resource category
+
+  # get
+  '/resource_category':
+    get:
+      tags:
+        - Resource category
+      summary: 'Get a list of resource categories.'
+      responses:
+        200:
+          description: Operation successful.
+          schema:
+            type: object
+            properties:
+              body:
+                $ref: 'definitions.yaml#/ResourceCategoryList'
+
+  #-----------------------------------------------------------------------------
+  # resource
+
+  #-----------------------------------------------------------------------------
+  # user
+
+  '/me':
+    parameters:
+      - $ref: 'parameters.yaml#/accessToken'
+      - $ref: 'parameters.yaml#/appId'
+    # get
+    get:
+      tags:
+        - User profile
+      summary: 'Get the profile of the current user.'
+      responses:
+        200:
+          description: Operation successful.
+          schema:
+            type: object
+            properties:
+              body:
+                $ref: 'definitions.yaml#/Profile'
+    # put
+    put:
+      tags:
+        - User profile
+      parameters:
+        - in: body
+          name: profileData
+          description: 'Data for user-profile.'
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "User's full name"
+      summary: 'Update the profile of the current user.'
+      responses:
+        200:
+          description: Operation successful.
+          schema:
+            type: object
+            properties:
+              body:
+                type: string
+                description: Operation successful.
+

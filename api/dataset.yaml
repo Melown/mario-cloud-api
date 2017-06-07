@@ -1,0 +1,154 @@
+#===============================================================================
+# Dataset
+
+#-------------------------------------------------------------------------------
+# get, put, delete
+getPutDelete:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/datasetId'
+  get:
+    tags:
+      - Dataset
+    summary: 'Returns a dataset.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Dataset'
+      404:
+        $ref: 'responses.yaml#/404'
+  put:
+    tags:
+      - Dataset
+    summary: 'Update an existing a dataset.'
+    parameters:
+      - name: dataset
+        in: body
+        description: 'Updated dataset object'
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: New dataset name
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Dataset'
+      404:
+        $ref: 'responses.yaml#/404'
+  delete:
+    tags:
+      - Dataset
+    summary: 'Deletes a dataset.'
+    responses:
+      204:
+        $ref: 'responses.yaml#/204'
+      404:
+        $ref: 'responses.yaml#/404'
+
+#-------------------------------------------------------------------------------
+# get references
+references:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/datasetId'
+  get:
+    tags:
+      - Dataset
+    summary: 'Returns resources exported from a dataset and maps referencing these resources.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/DatasetReferences'
+      404:
+        $ref: 'responses.yaml#/404'
+
+#-------------------------------------------------------------------------------
+# get duplicate
+duplicate:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/datasetId'
+  get:
+    tags:
+      - Dataset
+    summary: 'Clones a dataset.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Dataset'
+      400:
+        $ref: 'responses.yaml#/400'
+      404:
+        $ref: 'responses.yaml#/404'
+
+#-------------------------------------------------------------------------------
+# get cancel
+cancel:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/datasetId'
+  get:
+    tags:
+      - Dataset
+    summary: 'Cancels the current operation (upload / export).'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Dataset'
+      400:
+        $ref: 'responses.yaml#/400'
+      404:
+        $ref: 'responses.yaml#/404'
+
+#-------------------------------------------------------------------------------
+# post export
+export:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/datasetId'
+  post:
+    parameters:
+      - $ref: 'parameters.yaml#/ExportDataset'
+    tags:
+      - Dataset
+    summary: 'Exports a dataset to a resource.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/Dataset'
+      400:
+        $ref: 'responses.yaml#/400'
+      404:
+        $ref: 'responses.yaml#/404'

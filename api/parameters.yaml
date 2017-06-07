@@ -1,0 +1,95 @@
+#===============================================================================
+# General parameters
+
+accessToken:
+  in: query
+  name: access_token
+  description: "User's access token."
+  required: true
+  type: string
+
+appId:
+  in: query
+  name: app_id
+  description: 'Current application-ID.'
+  required: true
+  type: string
+
+appIdentifyier:
+  in: path
+  name: appIdentifyier
+  description: 'Application-ID for a certain map.'
+  required: true
+  type: string
+
+accountId:
+  in: path
+  name: accountId
+  description: 'ID of the account.'
+  required: true
+  type: integer
+
+datasetId:
+  in: path
+  name: datasetId
+  description: 'ID of a dataset.'
+  required: true
+  type: integer
+
+invitationId:
+  in: path
+  name: invitationId
+  description: 'ID of the account.'
+  required: true
+  type: integer
+
+userId:
+  in: path
+  name: userId
+  description: 'ID of the user.'
+  required: true
+  type: integer
+
+page:
+  in: query
+  name: page
+  description: 'Current result-page.'
+  required: false
+  type: integer
+  default: 1
+
+userData:
+  in: body
+  name: userData
+  description: 'Data for user.'
+  required: true
+  schema:
+    type: object
+    properties:
+      role:
+        type: string
+        enum: [user, admin]
+        description: Role of the user in account.
+
+ExportDataset:
+  in: body
+  name: datasetInfo
+  description: 'Export-settings for dataset.'
+  required: true
+  schema:
+    type: object
+    required: [name, caption, description, zshift]
+    properties:
+      name:
+        type: string
+        description: Name of the resource to export.
+      caption:
+        type: string
+        description: 'TODO: CHECK: Additional title.'
+      description:
+        type: string
+        description: Additional description.
+      zshift:
+        type: string
+        description: If the dataset needs z-shifting, this is the value (in m).
+

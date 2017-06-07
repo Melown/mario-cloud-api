@@ -1,0 +1,42 @@
+#===============================================================================
+# Analytics
+
+#-------------------------------------------------------------------------------
+# get updated datasets
+updateddatasets:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/page'
+  get:
+    tags:
+      - 'Updated datasets'
+    summary: 'Returns a list of datasets ordered by last update.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/UpdatedDatasets'
+
+#-------------------------------------------------------------------------------
+# get updated maps
+updatedmaps:
+  parameters:
+    - $ref: 'parameters.yaml#/accessToken'
+    - $ref: 'parameters.yaml#/appId'
+    - $ref: 'parameters.yaml#/page'
+  get:
+    tags:
+      - 'Updated maps'
+    summary: 'Returns a list of maps ordered by last update.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/UpdatedMaps'

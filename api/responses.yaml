@@ -1,0 +1,45 @@
+#===============================================================================
+# Common responses
+
+204:
+  description: Operation successful.
+
+400:
+  description: Update rejected, invalid data.
+  schema:
+    type: object
+    properties:
+      error:
+        $ref: 'definitions.yaml#/Error'
+
+403:
+  description: Forbidden.
+  schema:
+    type: object
+    properties:
+      error:
+        $ref: 'definitions.yaml#/Error'
+
+404:
+  description: Entity not found.
+  schema:
+    type: object
+    properties:
+      error:
+        $ref: 'definitions.yaml#/Error'
+
+405:
+  description: The HTTP-method is not allowed.
+  schema:
+    type: object
+    properties:
+      error:
+        $ref: 'definitions.yaml#/Error'
+
+409:
+  description: 'Conflict: The user is trying to add himself.'
+  schema:
+    type: object
+    properties:
+      error:
+        $ref: 'definitions.yaml#/Error'
