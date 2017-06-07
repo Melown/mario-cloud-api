@@ -1,0 +1,46 @@
+#-----------------------------------------------------------------------------
+# profile
+
+getPutProfile:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+  # get
+  get:
+    tags:
+      - User profile
+    summary: 'Get the profile of the current user.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: '../account/definitions.yaml#/Profile'
+  # put
+  put:
+    tags:
+      - User profile
+    parameters:
+      - in: body
+        name: profileData
+        description: 'Data for user-profile.'
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: "User's full name"
+    summary: 'Update the profile of the current user.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              type: string
+              description: Operation successful.
+

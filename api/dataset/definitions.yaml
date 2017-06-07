@@ -1,0 +1,169 @@
+#===============================================================================
+# Dataset
+
+#-------------------------------------------------------------------------------
+# File in Dataset
+Dataset.File:
+  type: object
+  properties:
+    byte_size:
+      type: integer
+      description: Filesize of this file in bytes.
+    crc:
+      type: string
+      description: Checksum - not used, always empty string.
+    path:
+      type: string
+      description: Relative path inside store.
+    progress:
+      type: number
+      description: 'Upload-progress in %.'
+    upload_byte_offset:
+      type: integer
+      description: While uploading, current offset.
+
+#-------------------------------------------------------------------------------
+# Resource in Dataset
+Dataset.Resource:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: ID of this resource.
+    name:
+      type: string
+      description: Name given by the exporter.
+    caption:
+      type: string
+      description: 'TODO: CHECK: Additional title.'
+
+#-------------------------------------------------------------------------------
+# Make in Dataset
+Dataset.Make:
+  type: object
+  properties:
+    analyse_target_id:
+      type: integer
+      description: 'TODO: MORE DATA: Analyse-target.'
+
+#-------------------------------------------------------------------------------
+# Dataset
+Dataset:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: ID of this dataset.
+    name:
+      type: string
+      description: Name given by the uploader.
+    owner_account_id:
+      type: string
+      description: Account-ID of the owner's account.
+    type:
+      type: string
+      description: Type of dataset.
+    status:
+      type: string
+      enum: [analysing, corrupted, deleted, export_failed, exported, exporting, ready, uploading]
+      description: Overall status this dataset is currently in.
+    progress:
+      type: number
+      description: 'Progress of current operation on this dataset, if any, in %. 0 otherwise.'
+    byte_size:
+      type: integer
+      description: Filesize of this dataset in bytes.
+    area:
+      type: number
+      description: 'TODO: CHECK: Not used, always 0.'
+    make:
+      $ref: '#/Dataset.Make'
+    time_created:
+      type: string
+      format: date-time
+      description: dateTime when this dataset was created.
+    time_edited:
+      type: string
+      format: date-time
+      description: dateTime when this dataset was last modified.
+    time_analyse_started:
+      type: string
+      format: date-time
+      description: dateTime when anaylsis was started for this dataset. Can be null.
+    time_export_started:
+      type: string
+      format: date-time
+      description: dateTime when an export was started for this dataset. Can be null.
+    upload_progress:
+      type: number
+      description: 'While the dataset is uploading, the current progress in %.'
+    analyse_progress:
+      type: number
+      description: 'While the dataset is being analysed, the current progress in %.'
+    export_progress:
+      type: number
+      description: 'While the dataset is exporting, the current progress in %.'
+    analyse_status:
+      type: string
+      enum: [complete, error, ready, underway]
+      description: 'Current status of the last analyse-operation. Can be `null`
+        if analysis was not yet started.'
+    export_status:
+      type: string
+      enum: [complete, error, ready, underway]
+      description: 'Current status of the last export-operation. Can be `null`
+        if the dataset was never exported.'
+    category:
+      type: string
+      enum: [Feature, Imagery, Special, Stylesheet, Surface, True3D]
+      description: Category of resource this dataset belongs to.
+    format:
+      type: string
+      description: Type of this dataset, e.g 'gtiff', 'tls'.
+    format_detail:
+      type: string
+      description: 'TODO: CHECK: Details of format. Not used, always `null`.'
+    files:
+      type: array
+      description: 'List of files belonging to this dataset.'
+      items:
+        $ref: '#/Dataset.File'
+    resources:
+      type: array
+      description: 'List of resources exported from this dataset.'
+      items:
+        $ref: '#/Dataset.Resource'
+
+#-------------------------------------------------------------------------------
+# References for dataset
+Dataset.References:
+  type: object
+  additionalProperties:
+    type: object
+    description: 'Key is the dataset-ID.'
+    properties:
+      resources:
+        type: array
+        description: 'List of resource-IDs.'
+        items:
+          type: integer
+          description: Resource-ID.
+      maps:
+        type: array
+        description: 'List of map-IDs.'
+        items:
+          type: integer
+          description: Map-ID.
+
+# NewDataset
+NewDataset:
+  type: object
+  required: [name, type]
+  properties:
+    name:
+      type: string
+      description: Name given by the uploader.
+    type:
+      type: string
+      description: Type of dataset.
+

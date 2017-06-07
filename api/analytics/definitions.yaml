@@ -1,0 +1,110 @@
+#===============================================================================
+# Analytics
+
+#-------------------------------------------------------------------------------
+# Dataset in Analytics.DatasetList
+Analytics.Dataset:
+  type: object
+  properties:
+    dataset_id:
+      type: integer
+      description: Numeric ID of the dataset.
+    name:
+      type: string
+      description: Name of the dataset.
+    time_edited:
+      type: string
+      format: date-time
+      description: dateTime when the dataset was edited last time.
+    time_created:
+      type: string
+      format: date-time
+      description: dateTime when the dataset was created.
+    format:
+      type: string
+      description: "Type of this dataset, e.g 'gtiff', 'tls'."
+    account_id:
+      type: integer
+      description: Numeric ID of the account owning the map.
+    account_alias:
+      type: string
+      description: Alias of the account owning the map.
+
+#-------------------------------------------------------------------------------
+# MapConfig in Analytics.MapConfigList
+Analytics.MapConfig:
+  type: object
+  properties:
+    name:
+      type: string
+      description: Name of the map.
+    time_edited:
+      type: string
+      format: date-time
+      description: dateTime when the map was edited last time.
+    time_created:
+      type: string
+      format: date-time
+      description: dateTime when the map was created.
+    app:
+      type: string
+      description: Application-ID.
+    map_config_id:
+      type: integer
+      description: Numeric ID of map.
+    working_copy_for_map_config_id:
+      type: string
+      description: If not null, then this is the working-copy for that map.
+    account_id:
+      type: integer
+      description: Numeric ID of the account owning the map.
+    account_alias:
+      type: string
+      description: Alias of the account owning the map.
+
+#-------------------------------------------------------------------------------
+# AnalyticsResult in analytics
+AnalyticsResult:
+  type: object
+  properties:
+    totalCount:
+      type: integer
+      description: Total number of items in result.
+    pagesCount:
+      type: integer
+      description: Number of result-pages.
+    offset:
+      type: integer
+      description: Offset of current page in result.
+    currentPage:
+      type: integer
+      description: Current result-page.
+
+#-------------------------------------------------------------------------------
+# Analytics.DatasetList in analytics
+Analytics.DatasetList:
+  type: object
+  allOf:
+      - $ref: '#/AnalyticsResult'
+      - type: object
+        properties:
+          updatedDatasets:
+            type: array
+            description: 'Result: List of datasets.'
+            items:
+              $ref: '#/Analytics.Dataset'
+
+#-------------------------------------------------------------------------------
+# Analytics.MapConfigList in analytics
+Analytics.MapConfigList:
+  type: object
+  allOf:
+      - $ref: '#/AnalyticsResult'
+      - type: object
+        properties:
+          updatedMaps:
+            type: array
+            description: 'Result: List of maps.'
+            items:
+              $ref: '#/Analytics.MapConfig'
+

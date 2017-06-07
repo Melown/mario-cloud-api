@@ -1,0 +1,169 @@
+#===============================================================================
+# Account, User, Profile
+
+#-------------------------------------------------------------------------------
+# User in Account
+Account.User:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: User's numeric id.
+    email:
+      type: string
+      description: User's email.
+    name:
+      type: string
+      description: User's full name.
+    role:
+      type: string
+      description: User's role in that account.
+
+#-------------------------------------------------------------------------------
+# Datasets in Account
+Account.Datasets:
+  type: object
+  properties:
+    usage:
+      $ref: '#/Usage'
+    datasets:
+      type: array
+      description: 'Result: List of datasets.'
+      items:
+        $ref: '../dataset/definitions.yaml#/Dataset'
+
+#-------------------------------------------------------------------------------
+# Account - limited data
+AccountSimple:
+  type: object
+  title: 'Account (for non-members)'
+  properties:
+    id:
+      type: integer
+      description: Account's numeric id.
+    alias:
+      type: string
+      description: Account-alias, derived from email.
+    name:
+      type: string
+      description: Name of the account.
+
+#-------------------------------------------------------------------------------
+# Account - full data
+AccountFull:
+  type: object
+  title: 'Account (full)'
+  allOf:
+    - $ref: '#/AccountSimple'
+    - type: object
+      properties:
+        billing_plan_alias:
+          type: string
+          description: Alias of the billing plan.
+        time_created:
+          type: string
+          format: date-time
+          description: dateTime when this account was created.
+        time_modified:
+          type: string
+          format: date-time
+          description: dateTime when this account was last modified.
+        credits:
+          type: array
+          items:
+            $ref: '#/Credit'
+        users:
+          type: array
+          items:
+            $ref: '#/Account.User'
+        invitations:
+          type: array
+          items:
+            $ref: '#/Invitation'
+        dataset_quota_mb:
+          type: integer
+          description: Quota for uploading datasets in MB.
+
+#-------------------------------------------------------------------------------
+# Account in User
+User.Account:
+  type: object
+  allOf:
+    - $ref: '#/AccountSimple'
+    - type: object
+      properties:
+        user_role:
+          type: string
+          description: Current user's role in that account.
+        dataset_quota_mb:
+          type: integer
+          description: Quota for uploading datasets in MB.
+
+#-------------------------------------------------------------------------------
+# Profile
+Profile:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: User's numeric id.
+    email:
+      type: string
+      description: User's email.
+    name:
+      type: string
+      description: User's full name.
+    flag_admin:
+      type: boolean
+      description: True if the user is a super-admin.
+    accounts:
+      type: array
+      description: Accounts the user is a member of.
+      items:
+        $ref: '#/User.Account'
+
+#-------------------------------------------------------------------------------
+# Credit
+Credit:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Credit's string-id.
+    numeric_id:
+      type: integer
+      description: Credit's numeric id.
+    notice:
+      type: string
+      description: Copyright notice.
+    flag_used:
+      type: boolean
+      description: '- TODO: not used -'
+
+#-------------------------------------------------------------------------------
+# Invitation
+Invitation:
+  type: object
+  properties:
+    token:
+      type: string
+      description: Token for this invitation.
+    email:
+      type: string
+      description: Email of the receiver of this invitation.
+    time_send:
+      type: string
+      format: date-time
+      description: dateTime when the invitation was last sent.
+
+#-------------------------------------------------------------------------------
+# Usage (quota info)
+Usage:
+  type: object
+  properties:
+    quota:
+      type: integer
+      description: Quota for uploading datasets for this account in bytes.
+    used:
+      type: integer
+      description: Bytes already used.

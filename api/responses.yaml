@@ -5,7 +5,7 @@
   description: Operation successful.
 
 400:
-  description: Update rejected, invalid data.
+  description: Operation rejected, invalid data.
   schema:
     type: object
     properties:

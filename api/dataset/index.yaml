@@ -5,9 +5,9 @@
 # get, put, delete
 getPutDelete:
   parameters:
-    - $ref: 'parameters.yaml#/accessToken'
-    - $ref: 'parameters.yaml#/appId'
-    - $ref: 'parameters.yaml#/datasetId'
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/datasetId'
   get:
     tags:
       - Dataset
@@ -21,7 +21,7 @@ getPutDelete:
             body:
               $ref: 'definitions.yaml#/Dataset'
       404:
-        $ref: 'responses.yaml#/404'
+        $ref: '../responses.yaml#/404'
   put:
     tags:
       - Dataset
@@ -46,24 +46,24 @@ getPutDelete:
             body:
               $ref: 'definitions.yaml#/Dataset'
       404:
-        $ref: 'responses.yaml#/404'
+        $ref: '../responses.yaml#/404'
   delete:
     tags:
       - Dataset
     summary: 'Deletes a dataset.'
     responses:
       204:
-        $ref: 'responses.yaml#/204'
+        $ref: '../responses.yaml#/204'
       404:
-        $ref: 'responses.yaml#/404'
+        $ref: '../responses.yaml#/404'
 
 #-------------------------------------------------------------------------------
 # get references
 references:
   parameters:
-    - $ref: 'parameters.yaml#/accessToken'
-    - $ref: 'parameters.yaml#/appId'
-    - $ref: 'parameters.yaml#/datasetId'
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/datasetId'
   get:
     tags:
       - Dataset
@@ -75,17 +75,17 @@ references:
           type: object
           properties:
             body:
-              $ref: 'definitions.yaml#/DatasetReferences'
+              $ref: 'definitions.yaml#/Dataset.References'
       404:
-        $ref: 'responses.yaml#/404'
+        $ref: '../responses.yaml#/404'
 
 #-------------------------------------------------------------------------------
 # get duplicate
 duplicate:
   parameters:
-    - $ref: 'parameters.yaml#/accessToken'
-    - $ref: 'parameters.yaml#/appId'
-    - $ref: 'parameters.yaml#/datasetId'
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/datasetId'
   get:
     tags:
       - Dataset
@@ -99,17 +99,17 @@ duplicate:
             body:
               $ref: 'definitions.yaml#/Dataset'
       400:
-        $ref: 'responses.yaml#/400'
+        $ref: '../responses.yaml#/400'
       404:
-        $ref: 'responses.yaml#/404'
+        $ref: '../responses.yaml#/404'
 
 #-------------------------------------------------------------------------------
 # get cancel
 cancel:
   parameters:
-    - $ref: 'parameters.yaml#/accessToken'
-    - $ref: 'parameters.yaml#/appId'
-    - $ref: 'parameters.yaml#/datasetId'
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/datasetId'
   get:
     tags:
       - Dataset
@@ -123,20 +123,20 @@ cancel:
             body:
               $ref: 'definitions.yaml#/Dataset'
       400:
-        $ref: 'responses.yaml#/400'
+        $ref: '../responses.yaml#/400'
       404:
-        $ref: 'responses.yaml#/404'
+        $ref: '../responses.yaml#/404'
 
 #-------------------------------------------------------------------------------
 # post export
 export:
   parameters:
-    - $ref: 'parameters.yaml#/accessToken'
-    - $ref: 'parameters.yaml#/appId'
-    - $ref: 'parameters.yaml#/datasetId'
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/datasetId'
   post:
     parameters:
-      - $ref: 'parameters.yaml#/ExportDataset'
+      - $ref: '../parameters.yaml#/datasetExport'
     tags:
       - Dataset
     summary: 'Exports a dataset to a resource.'
@@ -149,6 +149,6 @@ export:
             body:
               $ref: 'definitions.yaml#/Dataset'
       400:
-        $ref: 'responses.yaml#/400'
+        $ref: '../responses.yaml#/400'
       404:
-        $ref: 'responses.yaml#/404'
+        $ref: '../responses.yaml#/404'

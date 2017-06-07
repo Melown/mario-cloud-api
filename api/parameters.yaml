@@ -1,5 +1,5 @@
 #===============================================================================
-# General parameters
+# Parameters
 
 accessToken:
   in: query
@@ -71,7 +71,7 @@ userData:
         enum: [user, admin]
         description: Role of the user in account.
 
-ExportDataset:
+datasetExport:
   in: body
   name: datasetInfo
   description: 'Export-settings for dataset.'
@@ -92,4 +92,69 @@ ExportDataset:
       zshift:
         type: string
         description: If the dataset needs z-shifting, this is the value (in m).
+
+newMapConfig:
+  in: body
+  name: newMapConfig
+  description: 'Data for new map.'
+  required: true
+  schema:
+    type: object
+    required: [name, owner_account_id, reference_frame_id]
+    properties:
+      name:
+        type: string
+        description: 'Name for the new map.'
+      owner_account_id:
+        type: integer
+        description: 'Account under which the map will be created.'
+      insertData:
+        type: string
+        description: 'TODO: What is this?'
+      reference_frame_id:
+        type: string
+        description: 'Reference frame for the map.'
+      title:
+        type: string
+        description: 'Title of the map.'
+      description:
+        type: string
+        description: 'Description for the map.'
+      rotation:
+        type: number
+        description: 'Intital rotation.'
+      position:
+        type: string
+        description: 'Intitial position.'
+      flag_example:
+        type: boolean
+        description: 'If true, this map will become a publically available example.'
+
+newInvitation:
+  type: object
+  required: [email]
+  properties:
+    email:
+      type: string
+      description: Receiver-email.
+    count:
+      type: integer
+      description: 'How often this invitation can be accepted (optional,
+        defaults to 0 - unlimited).'
+    time_valid_until:
+      type: string
+      format: date-time
+      description: 'Until when this invitation can be accepted (optional,
+        defaults to null - forever).'
+
+newDataset:
+  type: object
+  required: [name, type]
+  properties:
+    name:
+      type: string
+      description: Name given by the uploader.
+    type:
+      type: string
+      description: Type of dataset.
 

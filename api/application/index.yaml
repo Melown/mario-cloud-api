@@ -1,0 +1,23 @@
+#-----------------------------------------------------------------------------
+# Application
+# get
+getApplication:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+  get:
+    parameters:
+      - $ref: '../parameters.yaml#/appIdentifyier'
+    tags:
+      - 'Map-Application'
+    summary: 'Returns meta-info about a map(application).'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/MapApplication'
+      404:
+        $ref: '../responses.yaml#/404'

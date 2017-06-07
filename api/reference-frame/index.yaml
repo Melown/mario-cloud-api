@@ -1,0 +1,20 @@
+#-----------------------------------------------------------------------------
+# reference frame
+
+# get
+getReferenceFrame:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+  get:
+    tags:
+      - Reference frame
+    summary: 'Get a list of reference frames.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/ReferenceFrameList'

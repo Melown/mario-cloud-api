@@ -5,9 +5,9 @@
 # get updated datasets
 updateddatasets:
   parameters:
-    - $ref: 'parameters.yaml#/accessToken'
-    - $ref: 'parameters.yaml#/appId'
-    - $ref: 'parameters.yaml#/page'
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/page'
   get:
     tags:
       - 'Updated datasets'
@@ -19,15 +19,15 @@ updateddatasets:
           type: object
           properties:
             body:
-              $ref: 'definitions.yaml#/UpdatedDatasets'
+              $ref: 'definitions.yaml#/Analytics.DatasetList'
 
 #-------------------------------------------------------------------------------
 # get updated maps
 updatedmaps:
   parameters:
-    - $ref: 'parameters.yaml#/accessToken'
-    - $ref: 'parameters.yaml#/appId'
-    - $ref: 'parameters.yaml#/page'
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+    - $ref: '../parameters.yaml#/page'
   get:
     tags:
       - 'Updated maps'
@@ -39,4 +39,4 @@ updatedmaps:
           type: object
           properties:
             body:
-              $ref: 'definitions.yaml#/UpdatedMaps'
+              $ref: 'definitions.yaml#/Analytics.MapConfigList'

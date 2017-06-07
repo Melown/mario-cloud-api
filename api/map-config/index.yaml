@@ -1,0 +1,35 @@
+#-----------------------------------------------------------------------------
+# Map-config
+# list
+listMapConfigs:
+  parameters:
+    - $ref: '../parameters.yaml#/accessToken'
+    - $ref: '../parameters.yaml#/appId'
+  get:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Returns a list of maps this user has access to.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/MapConfigList'
+  post:
+    tags:
+      - 'Map-Configuration'
+    summary: 'Creates a new map.'
+    parameters:
+      - $ref: '../parameters.yaml#/newMapConfig'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: 'definitions.yaml#/MapDetail.MapConfig'
+      400:
+        $ref: '../responses.yaml#/400'

@@ -1,0 +1,38 @@
+#-------------------------------------------------------------------------------
+# Application
+Application:
+  type: object
+  properties:
+    id:
+      type: string
+      description: ID of this application.
+    authorization_url:
+      type: string
+      description: URL.
+    map_config_url:
+      type: string
+      description: URL to the map-configuration file.
+    title:
+      type: string
+      description: Public title of the map, including copyright.
+
+# MapApplication
+MapApplication:
+  type: object
+  properties:
+    authorization_url:
+      type: string
+      description: 'TODO: clarify: URL for authorization.'
+    id:
+      type: string
+      description: Appliction-ID.
+    map_config_url:
+      type: string
+      description: Location of the map-configuration.
+    title:
+      type: string
+      description: Map-title including copyright.
+    description_html:
+      type: string
+      description: 'TODO: description.'
+

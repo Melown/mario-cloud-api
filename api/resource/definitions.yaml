@@ -1,0 +1,72 @@
+#===============================================================================
+# Resource
+
+#-------------------------------------------------------------------------------
+# ResourceCategory
+ResourceCategory:
+  type: object
+  properties:
+    id:
+      type: string
+      description: ID of this category.
+    label:
+      type: string
+      description: Human readable name.
+
+#-------------------------------------------------------------------------------
+# ResourceCategoryList
+ResourceCategoryList:
+  type: array
+  items:
+    $ref: '#/ResourceCategory'
+
+#-------------------------------------------------------------------------------
+# Resource
+Resource:
+  type: object
+  properties:
+    alias:
+      type: string
+      description: Alias this resource.
+    caption:
+      type: string
+      description: Human readable title of resource.
+    description:
+      type: string
+      description: Description of this resource.
+    flag_default:
+      type: boolean
+      description: 'TODO: CHECK: True if this is a default-resource that comes with a new account.'
+    flag_deletable:
+      type: boolean
+      description: True if this resource can be deleted (was uploaded by the user).
+    flage_private:
+      type: boolean
+      description: 'TODO: CHECK: True if this resource is usable only by the owner account.'
+    id:
+      type: integer
+      description: Numeric ID of this resource.
+    name:
+      type: string
+      description: Name of this resource.
+    owner_account_id:
+      type: string
+      description: Account-ID of the owner's account.
+    reference_frame_id:
+      type: string
+      description: ID of the reference frame this map uses.
+    resource_category_id:
+      type: string
+      description: ID of the resource-category this resource belongs to.
+    resource_type_id:
+      type: string
+      description: ID of the type of this resource.
+    time_created:
+      type: string
+      format: date-time
+      description: dateTime when this resource was created.
+    time_modified:
+      type: string
+      format: date-time
+      description: dateTime when this resource was last modified.
+

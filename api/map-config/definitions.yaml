@@ -1,0 +1,111 @@
+#===============================================================================
+# MapConfig
+
+#-------------------------------------------------------------------------------
+# Basic MapConfig
+MapConfigBasic:
+  type: object
+  properties:
+    alias:
+      type: string
+      description: Alias derived from name.
+    path:
+      type: string
+      description: Relative path of this map-config in store.
+    name:
+      type: string
+      description: Name of the map.
+
+#-------------------------------------------------------------------------------
+# Extended MapConfig
+MapConfigExtended:
+  type: object
+  allOf:
+    - $ref: '#/MapConfigBasic'
+    - type: object
+      properties:
+        id:
+          type: integer
+          description: Numeric ID of this map.
+        has_changes:
+          type: boolean
+          description: True if this map was modified, and not yet published (a working-copy exists).
+        owner_account_id:
+          type: string
+          description: Account-ID of the owner's account.
+        reference_frame_id:
+          type: string
+          description: ID of the reference frame this map uses.
+        time_edited:
+          type: string
+          format: date-time
+          description: dateTime when the map was edited last time.
+        time_created:
+          type: string
+          format: date-time
+          description: dateTime when the map was created.
+        time_saved:
+          type: string
+          format: date-time
+          description: dateTime when the map was saved last time.
+
+#-------------------------------------------------------------------------------
+# MapConfig with more details
+MapConfigDetails:
+  type: object
+  properties:
+    description:
+      type: string
+      description: Description of the map.
+    rotation:
+      type: number
+      description: Rotation-value this map uses.
+    title:
+      type: string
+      description: Title of the map.
+    position:
+      type: string
+      description: JSON representing the position the map shows.
+    flag_example:
+      type: boolean
+      description: True if this map is one of the examples every account initially receives.
+
+#-------------------------------------------------------------------------------
+# MapConfig - working copy
+MapConfigDetailsResources:
+  type: object
+  allOf:
+    - $ref: '#/MapConfigBasic'
+    - $ref: '#/MapConfigDetails'
+    - type: object
+      properties:
+        resources:
+          type: array
+          description: 'List of resources this map uses.'
+          items:
+            type: integer
+            description: Resource-ID'
+
+#-------------------------------------------------------------------------------
+# MapConfigList
+MapConfigList:
+  type: array
+  description: 'List of maps.'
+  items:
+    $ref: '#/MapConfigExtended'
+
+#-------------------------------------------------------------------------------
+# MapConfig in single map route
+MapDetail.MapConfig:
+  type: object
+  allOf:
+    - $ref: '#/MapConfigDetailsResources'
+    - $ref: '#/MapConfigExtended'
+    - type: object
+      properties:
+        app:
+          type: string
+          description: Application-ID.
+        working:
+            $ref: '#/MapConfigDetailsResources'
+
