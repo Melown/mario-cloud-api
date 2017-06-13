@@ -5,6 +5,8 @@ Documentation for mario cloud (console application).
 This documentation is a collection
 of yaml-files for [swagger](http://swagger.io/). You can use [swagger-ui](http://swagger.io/swagger-ui/) to view and try it.
 
+The dataset-upload is documented in [upload-analysis.md](upload-analysis.md)
+
 ### Installation
 - clone swagger-ui from https://github.com/swagger-api/swagger-ui.git
 - Make the `dist`-folder from swagger-ui accessible to your webserver.
