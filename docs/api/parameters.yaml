@@ -4,8 +4,8 @@
 accessToken:
   in: query
   name: access_token
-  description: "User's access token."
-  required: true
+  description: "User's access token. Can be used instead of an Authorization-header."
+  required: false
   type: string
 
 appId:

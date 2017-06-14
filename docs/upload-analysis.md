@@ -25,7 +25,7 @@ dataset, you need to do the following:
     - [BLOCK](#block)
     - [ERROR](#error)
 
-![Analyze process](img/upload-analyze.png "Analyze process")
+![Analyze process](../img/upload-analyze.png "Analyze process")
 
 Once you have the websocket-connection, start by sending a [FILELIST](#filelist)-message.
 
