@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: Mario Console
-  version: '0.1.1'
+  version: '0.1.2'
   description: 'Mario console-API.'
 schemes:
   - https
@@ -11,6 +11,16 @@ consumes:
   - 'application/json'
 produces:
   - 'application/json'
+securityDefinitions:
+  melownAccounts:
+    description: 'Melown Accounts'
+    type: oauth2
+    flow: implicit
+    authorizationUrl: 'https://www.test.mlwn.se/accounts/auth/init'
+    scopes:
+      MARIO_API: 'Mario-API'
+security:
+  - melownAccounts: [MARIO_API]
 
 #===============================================================================
 # tags
