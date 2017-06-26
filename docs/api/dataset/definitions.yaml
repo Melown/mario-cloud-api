@@ -38,15 +38,6 @@ Dataset.Resource:
       description: 'Short description, used in tooltips.'
 
 #-------------------------------------------------------------------------------
-# Make in Dataset
-Dataset.Make:
-  type: object
-  properties:
-    analyse_target_id:
-      type: integer
-      description: 'TODO: MORE DATA: Analyse-target.'
-
-#-------------------------------------------------------------------------------
 # Dataset
 Dataset:
   type: object
@@ -75,9 +66,7 @@ Dataset:
       description: Filesize of this dataset in bytes.
     area:
       type: number
-      description: 'TODO: CHECK: Not used, always 0.'
-    make:
-      $ref: '#/Dataset.Make'
+      description: 'Not used, always 0.'
     time_created:
       type: string
       format: date-time
@@ -122,7 +111,7 @@ Dataset:
       description: Type of this dataset, e.g 'gtiff', 'tls'.
     format_detail:
       type: string
-      description: 'TODO: CHECK: Details of format. Not used, always `null`.'
+      description: 'TODO: add definition of format_details for each format: Additional information for certain dataformats.'
     files:
       type: array
       description: 'List of files belonging to this dataset.'

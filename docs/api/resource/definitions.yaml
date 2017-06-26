@@ -36,13 +36,13 @@ Resource:
       description: Description of this resource.
     flag_default:
       type: boolean
-      description: 'TODO: CHECK: True if this is a default-resource that comes with a new account.'
+      description: 'True if this is a default-resource, means, it will be included in new maps for a specific reference frame.'
     flag_deletable:
       type: boolean
       description: True if this resource can be deleted (was uploaded by the user).
-    flage_private:
+    flag_private:
       type: boolean
-      description: 'TODO: CHECK: True if this resource is usable only by the owner account.'
+      description: 'TODO: check if used: True if this resource is usable only by the owner account.'
     id:
       type: integer
       description: Numeric ID of this resource.
