@@ -1,24 +1,6 @@
 #-----------------------------------------------------------------------------
 # Application
 
-# list
-#listApplications:
-#  parameters:
-#    - $ref: '../parameters.yaml#/accessToken'
-#    - $ref: '../parameters.yaml#/appId'
-#  get:
-#    tags:
-#      - 'Map-Application'
-#    summary: 'Returns a list of map(application)s.'
-#    responses:
-#      200:
-#        description: Operation successful.
-#        schema:
-#          type: object
-#          properties:
-#            body:
-#              $ref: 'definitions.yaml#/MapApplication'
-
 # get
 getApplication:
   get:
