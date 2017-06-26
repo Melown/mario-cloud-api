@@ -22,7 +22,7 @@ MapApplication:
   properties:
     authorization_url:
       type: string
-      description: 'TODO: clarify: URL for authorization.'
+      description: 'Call this URL to establish a session for your map-application.'
     id:
       type: string
       description: Appliction-ID.
@@ -34,5 +34,4 @@ MapApplication:
       description: Map-title including copyright.
     description_html:
       type: string
-      description: 'TODO: description.'
-
+      description: 'Description of the map - generated, or as you entered.'

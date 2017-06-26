@@ -122,9 +122,6 @@ newMapConfig:
       owner_account_id:
         type: integer
         description: 'Account under which the map will be created.'
-      insertData:
-        type: string
-        description: 'TODO: What is this?'
       reference_frame_id:
         type: string
         description: 'Reference frame for the map.'

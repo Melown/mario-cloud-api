@@ -9,9 +9,6 @@ ReferenceFrame:
     display_order:
       type: integer
       description: For ordering in the frontend. Currently always 1.
-    flag_public:
-      type: boolean
-      description: 'TODO: CHECK: True if this is a public reference frame.'
     id:
       type: string
       description: ID of this reference frame.
