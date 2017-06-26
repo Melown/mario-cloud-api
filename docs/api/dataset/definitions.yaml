@@ -35,7 +35,7 @@ Dataset.Resource:
       description: Name given by the exporter.
     caption:
       type: string
-      description: 'TODO: CHECK: Additional title.'
+      description: 'Short description, used in tooltips.'
 
 #-------------------------------------------------------------------------------
 # Make in Dataset

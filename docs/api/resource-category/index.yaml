@@ -3,17 +3,16 @@
 
 # get
 getResourceCategory:
-  '/resource_category':
-    get:
-      tags:
-        - Resource category
-      summary: 'Get a list of resource categories.'
-      responses:
-        200:
-          description: Operation successful.
-          schema:
-            type: object
-            properties:
-              body:
-                $ref: '../resource/definitions.yaml#/ResourceCategoryList'
+  get:
+    tags:
+      - Resource category
+    summary: 'Get a list of resource categories.'
+    responses:
+      200:
+        description: Operation successful.
+        schema:
+          type: object
+          properties:
+            body:
+              $ref: '../resource/definitions.yaml#/ResourceCategoryList'
 
