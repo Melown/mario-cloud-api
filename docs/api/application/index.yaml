@@ -1,10 +1,8 @@
 #-----------------------------------------------------------------------------
 # Application
+
 # get
 getApplication:
-  parameters:
-    - $ref: '../parameters.yaml#/accessToken'
-    - $ref: '../parameters.yaml#/appId'
   get:
     parameters:
       - $ref: '../parameters.yaml#/appIdentifier'

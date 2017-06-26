@@ -59,7 +59,15 @@ If successful, you will receive a response with status `201` and a json-body
 
 ### Binary and text messages
 
-There are two types of messages: Text(json)-messages and binary messages.
+There are two types of messages: Text(json)-messages and binary messages. Binary
+messages are used whereever the jsfs-daemon is involved, while text messages are
+only used for communication between the client and the backend - they are for convenience.
+
+All numbers are in little endian (Intel).
+
+Everything is byte-aligned.
+
+All lengths are in bytes.
 
 Each binary message consists of a header, and a payload.
 
@@ -70,17 +78,22 @@ The header consists of two fields, each being a `uint8`:
 |0      |1      |uint8 |version                |always 0 |
 |1      |1      |uint8 |[Type](#message-types) |         |
 
+```
+struct Header {
+  ubyte version;       // version of protocol, currently 0
+  ubyte type;          // message type
+};
+```
 
 ### Message types
 
-|Name                      |Value for `type` |Type of message |
-|--------------------------|-----------------|----------------|
-|[FILELIST](#filelist)     |0                |text/json       |
-|[READ](#read)             |1                |binary          |
-|[BLOCK](#block)           |2                |binary          |
-|[ERROR](#error)           |3                |binary          |
-|ROOT                      |4                |N/A             |
-|[RESULT](#result-success) |5                |text/json       |
+|Name                      |Value for `type` |JSON |binary |
+|--------------------------|-----------------|-----|-------|
+|[FILELIST](#filelist)     |0                |  X  |   X   |
+|[READ](#read)             |1                |     |   X   |
+|[BLOCK](#block)           |2                |     |   X   |
+|[ERROR](#error)           |3                |     |   X   |
+|[RESULT](#result-success) |5                |  X  |       |
 
 ### Error-codes
 
@@ -93,7 +106,111 @@ case an error occures while reading data from a file:
 |EIO    |5     |I/O error.                 |
 |EINVAL |22    |Invalid argument.          |
 
-### Messages
+### Binary messages
+
+#### FileList
+Type: binary  
+Direction: Client -> Server
+
+##### File
+
+|Offset |Length |Type   |Use                         |
+|-------|-------|-------|----------------------------|
+|0      |1      |uint8  |`size`: length of file name |
+|1      |`size` |[char] |file name (utf8)            |
+
+##### Fileinfo
+
+|Offset |Length |Type   |Use                                |
+|-------|-------|-------|-----------------------------------|
+|0      |1      |uint8  |version                            |
+|1      |1      |uint8  |message-type: [FILELIST](#filelist)|
+|2      |2      |uint16 |number of `File`s                  |
+|4      |varies |`File` |list of `File`s                    |
+
+```
+struct File {
+  ubyte nameSize;         // file name size
+  char name[nameSize];    // file name (in utf8 format)
+  uint64 size;            // file size 64bit
+};
+
+Header.type = 0;          // filelist
+
+struct Fileinfo {
+  struct Header header;   // Header
+  ushort fileCount;       // number of files
+  File files[fileCount];  // file list
+};
+```
+
+#### READ
+Type: binary  
+Direction: Server -> Client
+
+|Offset |Length |Type   |Use                           |Value |
+|-------|-------|-------|------------------------------|------|
+|0      |1      |uint8  |version                       |0     |
+|1      |1      |uint8  |message-type: [READ](#read)   |1     |
+|2      |4      |uint32 |distinct request ID           |      |
+|6      |2      |uint16 |index of file in filelist     |      |
+|8      |8      |uint64 |offset where to start reading |      |
+|16     |4      |uint16 |number of bytes to read       |      |
+
+```
+Header.type = 1;      // read
+
+struct Read {
+  struct Header header; // Header
+  uint32 requestId;     // distinct request ID
+  uint16 fileId;        // file order in filelist message (0 - fileCount-1)
+  uint64 offset;        // offset inside file
+  uint16 size;          // block size
+};
+```
+#### BLOCK
+Type: binary  
+Direction: Client -> Server
+
+|Offset |Length |Type    |Use                              |Value |
+|-------|-------|--------|---------------------------------|------|
+|0      |1      |uint8   |version                          |0     |
+|1      |1      |uint8   |message-type: [BLOCK](#block)    |2     |
+|2      |4      |uint32  |request ID from received message |      |
+|6      |2      |uint16  |`size`: number of bytes read     |      |
+|8      |`size` |[uint8] |bytes read from file             |      |
+
+```
+Header.type = 2;        // block
+
+struct Block {
+  struct Header header; // Header
+  uint32 requestId;     // must use requestId from associated read request
+  uint16 size;          // block size
+  ubyte block[size];    // payload
+};
+```
+#### ERROR
+Type: binary  
+Direction: Client -> Server
+
+|Offset |Length |Type   |Use                              |Value |
+|-------|-------|-------|---------------------------------|------|
+|0      |1      |uint8  |version                          |0     |
+|1      |1      |uint8  |message-type: [ERROR](#error)    |3     |
+|2      |4      |uint32 |request ID from received message |      |
+|6      |4      |uint32 |Error-code                       |      |
+
+```
+Header.type = 3;      // error
+
+struct Error {
+  struct Header header; // Header
+  uint32 requestId;     // must use requestId from associated read request
+  uint32 errno;
+};
+```
+### Text messages
 
 #### FileList
 Type: text/json  
@@ -110,45 +227,6 @@ Direction: Client -> Server
   ]
 }
 ```
-
-#### READ
-Type: binary  
-Direction: Server -> Client
-
-|Offset |Length |Type   |Use                           |Value |
-|-------|-------|-------|------------------------------|------|
-|0      |1      |uint8  |version                       |0     |
-|1      |1      |uint8  |message-type: [READ](#read)   |1     |
-|2      |4      |uint32 |distinct request ID           |      |
-|6      |2      |uint16 |index of file in filelist     |      |
-|8      |8      |uint64 |offset where to start reading |      |
-|16     |4      |uint16 |number of bytes to read       |      |
-
-#### BLOCK
-Type: binary  
-Direction: Client -> Server
-
-|Offset |Length |Type    |Use                              |Value |
-|-------|-------|--------|---------------------------------|------|
-|0      |1      |uint8   |version                          |0     |
-|1      |1      |uint8   |message-type: [BLOCK](#block)    |2     |
-|2      |4      |uint32  |request ID from received message |      |
-|6      |2      |uint16  |`size`: number of bytes read     |      |
-|8      |`size` |[uint8] |bytes read from file             |      |
-
-#### ERROR
-Type: binary  
-Direction: Client -> Server
-
-|Offset |Length |Type   |Use                              |Value |
-|-------|-------|-------|---------------------------------|------|
-|0      |1      |uint8  |version                          |0     |
-|1      |1      |uint8  |message-type: [ERROR](#error)    |3     |
-|2      |4      |uint32 |request ID from received message |      |
-|6      |4      |uint32 |Error-code                       |      |
-
-#### ROOT
-*not used*
 
 #### RESULT (success)
 Type: text/json  

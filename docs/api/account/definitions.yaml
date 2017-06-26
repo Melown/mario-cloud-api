@@ -136,9 +136,6 @@ Credit:
     notice:
       type: string
       description: Copyright notice.
-    flag_used:
-      type: boolean
-      description: '- TODO: not used -'
 
 #-------------------------------------------------------------------------------
 # Invitation

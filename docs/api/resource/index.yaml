@@ -7,12 +7,12 @@ listResources:
     - $ref: '../parameters.yaml#/appId'
     - in: query
       name: reference_frame
-      description: 'Limit result to a certain reference frame.'
+      description: 'Limits the result to a certain reference frame.'
       required: false
       type: string
     - in: query
       name: account
-      description: 'Limit result to a certain account.'
+      description: 'Limits the result to a certain account.'
       required: false
       type: integer
   get:

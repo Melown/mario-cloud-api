@@ -99,7 +99,7 @@ datasetExport:
         description: Name of the resource to export.
       caption:
         type: string
-        description: 'TODO: CHECK: Additional title.'
+        description: 'Additional short description, used in tooltips.'
       description:
         type: string
         description: Additional description.
@@ -224,4 +224,7 @@ updateResource:
       description:
         type: string
         description: 'Description for the map.'
+      position:
+        type: string
+        description: 'Default-position for the map.'
 
