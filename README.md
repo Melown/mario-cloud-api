@@ -10,20 +10,20 @@ see [docs/dataset-upload.md](docs/dataset-upload.md)
 
 ### API
 The API-documentation uses the OpenAPI Specification(OAS) and is packed together
-with the [swagger-ui](http://swagger.io/swagger-ui/). An adapted version of swagger-ui
-can be found in this repository.
+with the [swagger-ui](http://swagger.io/swagger-ui/). A customized version of
+swagger-ui can be found in this repository.
 
 #### Installation
-Due to some specialities of the cloud-API, you need to follow the instructions here
+Due to some specialities of the API, you need to follow the instructions here
 in case you want to test the API from within swagger-ui. If you are fine with just
 viewing it, you can of course just open [docs/api/index.yaml](docs/api/index.yaml)
 in your local copy of swagger-ui.
 
-The Mario Accounts-API expects an application-ID that is bound with a redirect-URL.
-We setup the app_id `com.melown.mario-api-docs` to redirect to
-`http://localhost/mario-api/oauth2-redirect.html`. This means, you have to run a
-webserver, you have to run on port 80, and you have to make swagger-ui available
-under the path `/mario-api`.
+The Mario Accounts-API expects an application-ID that is connected with a certain
+redirect-URL. We setup an application that redirects to `http://localhost/mario-api/oauth2-redirect.html` so you can use the documentation to test the API.
+
+This means, you have to run a webserver, you have to run it on port 80, and you
+have to make swagger-ui available under the path `/mario-api`.
 
 To do so, just copy (or link) the whole `mario-api`-folder into your webserver's
 document-root. In case you are on windows, make sure you also copy the `docs`-folder
@@ -46,4 +46,5 @@ with the following structure:
 
 Now navigate your webbrowser to http://localhost/mario-api.
 
-After loggin in via swagger-ui, you should be able to use all API-methods from within swagger-ui.
+After logged in in via swagger-ui, you should be able to use all API-methods from
+within swagger-ui.
