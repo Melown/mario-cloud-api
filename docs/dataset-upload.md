@@ -2,18 +2,18 @@
 
 You can upload custom data to our platform and use these resources in your maps.
 
-The following data formats are supported:
+The following data is supported:
 
-- tls tileset data
 - [GDAL raster data](http://www.gdal.org/formats_list.html)
-- [VEF tileset data](https://)
+- [VEF tilesets](https://)
+- tls tilesets
 
 ## Analysing your data
 
 Before uploading possibly gigabytes of data, you can run an analysis on that data,
 to see if we can process it. This step is optional, but it is suggested you
 do this. Otherwise you might end up with invalid data that just uses up your precious
-space but is not usable.
+space, but is not usable.
 
 The analyse process is described in the [Dataset analysis](upload-analysis.md) document.
 

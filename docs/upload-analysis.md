@@ -1,8 +1,12 @@
 # Dataset analysis
 
-To allow the system to analyse the files, they need to be "mounted", means, the
-backend needs to access arbitrary parts of these files to check for format headers and
-so on.
+Before you upload gigabytes of data that the system can't process, it is a good idea
+to let the system have a peek on that data and see if it knows how to handle it. This
+is what the dataset analysis is about.
+
+To allow the system to analyse the files you are planning to upload, you need to
+provide access to the backend for reading arbitrary parts of these files, so it
+can check format headers, file magics etc.
 
 This is realized via a websocket-connnection, that allows the backend to fetch
 whatever parts of the file it might need.
@@ -10,7 +14,7 @@ whatever parts of the file it might need.
 The general process of a data analysis is as follows:
 
 - open a websocket to `wss://www.melown.com/cloud/jsfs/`
-- handle these messages:
+- receive these messages:
     - [READ](#read)
     - [RESULT](#result-success)
 - send these messages:
@@ -20,7 +24,8 @@ The general process of a data analysis is as follows:
 
 ![Analyse process](../img/upload-analyse.png "Analyse process")
 
-Once you have the websocket-connection, start by sending a [FILELIST](#filelist)-message.
+Once you have the websocket-connection, start by sending a [FILELIST](#filelist)-message
+to kick off the analyse process.
 
 The backend will start to ask you for blocks of the file(s) via [READ](#read)-requests,
 which you will reply with [BLOCK](#block)-responses. This process is repeated until the backend
@@ -34,23 +39,24 @@ detailed information about the error.
 Otherwise, if all data is valid, you receive a [RESULT-success](#result-success)-message,
 and you can go on and [upload](dataset-upload.md) the file(s).
 
-### Binary and text messages
+## Message format
 
-There are two types of messages: Text(json)-messages and binary messages. Binary
-messages are mostley used, however, some messages have a text variant that usually is
+There are two types of messages: Text(JSON)-messages and binary messages. Binary
+messages are mostly used, however, some messages have a JSON variant that is usually
 easier to compose / parse.
 
-#### Binary messages
+### Binary messages
 
-All numbers are in little endian (Intel).
+Byte order is little endian (Intel).
 
-Everything is byte-aligned.
+Alignment is 1 (byte-aligned).
 
-All lengths are in bytes.
+All lengths stated here are in bytes.
 
-Each binary message consists of a header, and a payload.
+### Header
 
-The header consists of two fields, each being a `uint8`:
+Each binary message starts with a header, that consists of two fields, each being
+a `uint8`:
 
 |Offset |Length |Type  |Use                    |Value    |
 |-------|-------|------|-----------------------|---------|
@@ -64,7 +70,7 @@ struct Header {
 };
 ```
 
-## Reference
+After that header, the payload follows.
 
 ### Message types
 
@@ -87,26 +93,26 @@ case an error occures while reading data from a file:
 |EIO    |5     |I/O error (general error). |
 |EINVAL |22    |Invalid argument.          |
 
-### Binary messages
+## Binary messages
 
-#### FileList
+### FileList
 Direction: Client -> Server
 
-##### File
+#### File
 
 |Offset |Length |Type   |Use                                  |
 |-------|-------|-------|-------------------------------------|
 |0      |1      |uint8  |`size`: length of file name in bytes |
 |1      |`size` |[char] |file name (utf8)                     |
 
-##### Fileinfo
+#### Fileinfo
 
-|Offset |Length |Type   |Use                                |
-|-------|-------|-------|-----------------------------------|
-|0      |1      |uint8  |version                            |
-|1      |1      |uint8  |message-type: [FILELIST](#filelist)|
-|2      |2      |uint16 |number of `File`s                  |
-|4      |varies |`File` |list of `File`s                    |
+|Offset |Length   |Type   |Use                                |
+|-------|---------|-------|-----------------------------------|
+|0      |1        |uint8  |version                            |
+|1      |1        |uint8  |message-type: [FILELIST](#filelist)|
+|2      |2        |uint16 |number of `File`s                  |
+|4      |_varies_ |`File` |list of `File`s                    |
 
 ```C
 struct File {
@@ -124,7 +130,7 @@ struct Fileinfo {
 };
 ```
 
-#### READ
+### READ
 Direction: Server -> Client
 
 |Offset |Length |Type   |Use                           |Value |
@@ -147,7 +153,7 @@ struct Read {
   uint16 size;          // block size
 };
 ```
-#### BLOCK
+### BLOCK
 Direction: Client -> Server
 
 |Offset |Length |Type    |Use                              |Value |
@@ -168,7 +174,7 @@ struct Block {
   ubyte block[size];    // payload
 };
 ```
-#### ERROR
+### ERROR
 Direction: Client -> Server
 
 |Offset |Length |Type   |Use                              |Value |
@@ -187,9 +193,9 @@ struct Error {
   uint32 errno;
 };
 ```
-### Text messages
+## Text messages
 
-#### FileList
+### FileList
 Direction: Client -> Server
 ```JSON
 {
@@ -204,12 +210,12 @@ Direction: Client -> Server
 }
 ```
 
-#### RESULT (success)
+### RESULT (success)
 Direction: Server -> Client
 ```JSON
 {
   "version": 0,
-  "type": 5
+  "type": 5,
   "status": "complete",
 
   "category": "surface",
@@ -228,7 +234,7 @@ Direction: Server -> Client
 }
 ```
 
-#### RESULT (error)
+### RESULT (error)
 Direction: Server -> Client
 ```JSON
 {
