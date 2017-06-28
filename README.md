@@ -6,7 +6,7 @@ see [docs/authorization.md](docs/authorization.md)
 
 
 ### Dataset upload
-see [docs/upload-analysis.md](docs/upload-analysis.md)
+see [docs/upload-upload.md](docs/upload-upload.md)
 
 ### API
 The API-documentation uses the OpenAPI Specification(OAS) and is packed together

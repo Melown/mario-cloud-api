@@ -27,25 +27,25 @@ https://www.melown.com/accounts/auth/init
 
 with the follwing parameters:
 
-|Name           |Description                              |Value      |
-|---------------|-----------------------------------------|-----------|
-|`service_id`   |The melown-service the token will be for.|`mario`    |
+|Name           |Description                              |Value |
+|---------------|-----------------------------------------|--------|
+|`service_id`   |The melown-service the token will be for.|`mario` |
 |`client_id`    |The application-ID for your app (see below).||
-|`redirect_uri` |The URL the account service should redirect to on a successful login. This must match to your `client_id` (see below).||
-|`auth_method`  |The method(s) for authentication.        |`standard` |
+|`redirect_uri` |The URL the account service should redirect to on a successful login. This is bound to a certain `client_id` (see below). You can use exactly one `redirect_uri` per `client_id`, and it has to be exactly as you sent it to us (including a possible trailing slash!)||
+|`auth_method`  |The method(s) for authentication. |`standard` |
 |`response_type`|The type of authentication-response you expect.|`access_token` |
 |`scopes`       |Requested scope.|`MARIO_API` |
-|`state`        |Optional: Client app context data used against XSRF attacks. It's strongly recommended to use this parameter. Can be up to 30 chars.|           |
+|`state`        |Optional: Client app context data used against XSRF attacks. It's strongly recommended to use this parameter. Can be up to 30 chars.||
 
 If these parameters identify a valid combination of app, service and scope, Melown
 Accounts will navigate the user through the authorization process and redirect
-him to your app, if successful.
+him to your app (the `redirect_uri`), if successful.
 
 While doing so, the following parameters will be passed back to your app:
 
 |Name           |Description                              |Value |
 |---------------|-----------------------------------------|------|
-|`access_token` |Newly generated access token.            |      |
+|`access_token` |Newly generated access token.            ||
 |`expires`      |UNIX timestamp: When the token will become invalid.||
 |`state`        |The client app context data passed to Melown Accounts.||
 |`action`       |Action performed.                        |`accounts.signin`|
@@ -57,3 +57,7 @@ In case an error occured, Melown Accounts will instead pass these parameters:
 |`error`      |Error description. |
 |`error_code` |Error code.        |
 
+### `client_id` and `redirect_uri`
+
+You obtain a `client_id` by contacting us. Please send an email to info@melown.com
+and tell us, what you are planning to do. In any case, please provide a `redirect_uri` (and include that in your email), to where we should redirect after a successful login.
