@@ -1,23 +1,20 @@
-# Upload
+# Dataset analysis
 
-## Preparing a (list of) file(s) for uploading:
+Before you upload gigabytes of data that the system can't process, it is a good idea
+to let the system have a peek on that data and see if it knows how to handle it. This
+is what the dataset analysis is about.
 
-When you have files ready to upload, they need to be analyzed by the backend first.
-This is to prevent unnecessary uploads of possibly gigabytes of possibly malformed
-data.
-
-To allow the system to analyze the files, they need to be "mounted", means, the
-backend needs to access arbitrary parts of them to check for format headers and
-so on.
+To allow the system to analyse the files you are planning to upload, you need to
+provide access to the backend for reading arbitrary parts of these files, so it
+can check format headers, file magics etc.
 
 This is realized via a websocket-connnection, that allows the backend to fetch
 whatever parts of the file it might need.
 
-So when you have a file or a list of files that belong together to form a valid
-dataset, you need to do the following:
+The general process of a data analysis is as follows:
 
 - open a websocket to `wss://www.melown.com/cloud/jsfs/`
-- handle these messages:
+- receive these messages:
     - [READ](#read)
     - [RESULT](#result-success)
 - send these messages:
@@ -25,116 +22,97 @@ dataset, you need to do the following:
     - [BLOCK](#block)
     - [ERROR](#error)
 
-![Analyze process](../img/upload-analyze.png "Analyze process")
+![Analyse process](../img/upload-analyse.png "Analyse process")
 
-Once you have the websocket-connection, start by sending a [FILELIST](#filelist)-message.
+Once you have the websocket-connection, start by sending a [FILELIST](#filelist)-message
+to kick off the analyse process.
 
-The backend will start to ask you for blocks of the file(s) via [READ](#read)-messages,
-which you will reply with [BLOCK](#block)-messages. This process is repeated until the backend
-knows what it needs to know, and replies with a [RESULT](#result-success)-message, informing you
-about the success or failure of the analyze-process.
+The backend will start to ask you for blocks of the file(s) via [READ](#read)-requests,
+which you will reply with [BLOCK](#block)-responses. This process is repeated until the backend
+knows what it needs to know. It will then send a [RESULT](#result-success)-message, informing you
+about the success or failure of the analyse-process.
 
-In case the file is invalid (nothing that can be used to generate a valid resource), you will receive
-a [RESULT-error](#result-error)-message containing some detailed information about the error.
+In case any of the files is invalid (nothing that can be used to generate a valid
+resource), you will receive a [RESULT-error](#result-error)-message containing some
+detailed information about the error.
 
-After that, when you receive a positive [RESULT](#result-success)-message, you can go on and
-upload the file(s).
+Otherwise, if all data is valid, you receive a [RESULT-success](#result-success)-message,
+and you can go on and [upload](dataset-upload.md) the file(s).
 
-## Uploading
+## Message format
 
-After the files were analyzed, you can upload them one by one to `/cloud/backend/upload/file` via a `multipart/form-data`-`POST`-request.
+There are two types of messages: Text(JSON)-messages and binary messages. Binary
+messages are mostly used, however, some messages have a JSON variant that is usually
+easier to compose / parse.
 
-To do so, you first need to create a new dataset (see the API-documentation) to
-get the `datasetId`.
+### Binary messages
 
-Besides the file, the form must contain two fields:
+Byte order is little endian (Intel).
 
-- `datasetId`: The ID of the newly created dataset
-- `filename`: The basename of the file including extension.
+Alignment is 1 (byte-aligned).
 
-If successful, you will receive a response with status `201` and a json-body
-`{"success":true}`.
+All lengths stated here are in bytes.
 
-## Reference
+### Header
 
-### Binary and text messages
-
-There are two types of messages: Text(json)-messages and binary messages. Binary
-messages are used whereever the jsfs-daemon is involved, while text messages are
-only used for communication between the client and the backend - they are for convenience.
-
-All numbers are in little endian (Intel).
-
-Everything is byte-aligned.
-
-All lengths are in bytes.
-
-Each binary message consists of a header, and a payload.
-
-The header consists of two fields, each being a `uint8`:
+Each binary message starts with a header, that consists of two fields, each being
+a `uint8`:
 
 |Offset |Length |Type  |Use                    |Value    |
 |-------|-------|------|-----------------------|---------|
 |0      |1      |uint8 |version                |always 0 |
 |1      |1      |uint8 |[Type](#message-types) |         |
 
-```
+```C
 struct Header {
   ubyte version;       // version of protocol, currently 0
   ubyte type;          // message type
 };
 ```
 
+After that header, the payload follows.
+
 ### Message types
 
-|Name                      |Value for `type` |JSON |binary |
-|--------------------------|-----------------|-----|-------|
-|[FILELIST](#filelist)     |0                |  X  |   X   |
-|[READ](#read)             |1                |     |   X   |
-|[BLOCK](#block)           |2                |     |   X   |
-|[ERROR](#error)           |3                |     |   X   |
-|[RESULT](#result-success) |5                |  X  |       |
+The following types of messages exist:
+
+|Name                      |Value for `type` |Direction        |JSON |binary |
+|--------------------------|-----------------|-----------------|-----|-------|
+|[FILELIST](#filelist)     |0                |Client -> Server |  X  |   X   |
+|[READ](#read)             |1                |Server -> Client |     |   X   |
+|[BLOCK](#block)           |2                |Client -> Server |     |   X   |
+|[ERROR](#error)           |3                |Client -> Server |     |   X   |
+|[RESULT](#result-success) |5                |Server -> Client |  X  |       |
 
 ### Error-codes
 
-These are error-codes you send to the backend in an [ERROR](#error)-message in
+These are error-codes you can send to the backend in an [ERROR](#error)-message in
 case an error occures while reading data from a file:
 
 |Name   |Value |Meaning                    |
 |-------|------|---------------------------|
 |ENOENT |2     |No such file or directory. |
-|EIO    |5     |I/O error.                 |
+|EIO    |5     |I/O error (general error). |
 |EINVAL |22    |Invalid argument.          |
 
-### Binary messages
+## Binary messages
 
-#### FileList
-Type: binary  
+### FileList
 Direction: Client -> Server
 
-##### File
+This message is sent to the server to inform the backend about the list of files
+to be uploaded.
 
-|Offset |Length |Type   |Use                         |
-|-------|-------|-------|----------------------------|
-|0      |1      |uint8  |`size`: length of file name |
-|1      |`size` |[char] |file name (utf8)            |
+#### Fileinfo
 
-##### Fileinfo
+|Offset |Length   |Type   |Use                                |
+|-------|---------|-------|-----------------------------------|
+|0      |1        |uint8  |version                            |
+|1      |1        |uint8  |message-type: [FILELIST](#filelist)|
+|2      |2        |uint16 |number of `File`s                  |
+|4      |_varies_ |`File` |list of `File`s                    |
 
-|Offset |Length |Type   |Use                                |
-|-------|-------|-------|-----------------------------------|
-|0      |1      |uint8  |version                            |
-|1      |1      |uint8  |message-type: [FILELIST](#filelist)|
-|2      |2      |uint16 |number of `File`s                  |
-|4      |varies |`File` |list of `File`s                    |
-
-```
-struct File {
-  ubyte nameSize;         // file name size
-  char name[nameSize];    // file name (in utf8 format)
-  uint64 size;            // file size 64bit
-};
-
+```C
 Header.type = 0;          // filelist
 
 struct Fileinfo {
@@ -144,9 +122,25 @@ struct Fileinfo {
 };
 ```
 
-#### READ
-Type: binary  
+#### File
+
+|Offset |Length |Type   |Use                                  |
+|-------|-------|-------|-------------------------------------|
+|0      |1      |uint8  |`size`: length of file name in bytes |
+|1      |`size` |[char] |file name (utf8)                     |
+
+```C
+struct File {
+  ubyte nameSize;         // file name size in bytes
+  char name[nameSize];    // file name (in utf8 format)
+  uint64 size;            // file size 64bit
+};
+```
+
+### READ
 Direction: Server -> Client
+
+Sent from the backend to request a chunk of a file.
 
 |Offset |Length |Type   |Use                           |Value |
 |-------|-------|-------|------------------------------|------|
@@ -157,7 +151,7 @@ Direction: Server -> Client
 |8      |8      |uint64 |offset where to start reading |      |
 |16     |4      |uint16 |number of bytes to read       |      |
 
-```
+```C
 Header.type = 1;      // read
 
 struct Read {
@@ -168,9 +162,10 @@ struct Read {
   uint16 size;          // block size
 };
 ```
-#### BLOCK
-Type: binary  
+### BLOCK
 Direction: Client -> Server
+
+Sent from the client to the server as a response to a [READ](#read)-message.
 
 |Offset |Length |Type    |Use                              |Value |
 |-------|-------|--------|---------------------------------|------|
@@ -180,7 +175,7 @@ Direction: Client -> Server
 |6      |2      |uint16  |`size`: number of bytes read     |      |
 |8      |`size` |[uint8] |bytes read from file             |      |
 
-```
+```C
 Header.type = 2;        // block
 
 struct Block {
@@ -190,9 +185,10 @@ struct Block {
   ubyte block[size];    // payload
 };
 ```
-#### ERROR
-Type: binary  
+### ERROR
 Direction: Client -> Server
+
+Sent to the server in case an error occured during the processing of a [READ](#read)-message.
 
 |Offset |Length |Type   |Use                              |Value |
 |-------|-------|-------|---------------------------------|------|
@@ -201,8 +197,8 @@ Direction: Client -> Server
 |2      |4      |uint32 |request ID from received message |      |
 |6      |4      |uint32 |Error-code                       |      |
 
-```
-Header.type = 3;      // error
+```C
+Header.type = 3;        // error
 
 struct Error {
   struct Header header; // Header
@@ -210,12 +206,15 @@ struct Error {
   uint32 errno;
 };
 ```
-### Text messages
+## Text messages
 
-#### FileList
-Type: text/json  
+### FileList
 Direction: Client -> Server
-```
+
+This message is sent to the server to inform the backend about the list of files
+to be uploaded.
+
+```JSON
 {
   "version": 0,
   "type": 0,
@@ -228,13 +227,15 @@ Direction: Client -> Server
 }
 ```
 
-#### RESULT (success)
-Type: text/json  
+### RESULT (success)
 Direction: Server -> Client
-```
+
+Sent from the server when the anaylse process finished successful.
+
+```JSON
 {
   "version": 0,
-  "type": 5
+  "type": 5,
   "status": "complete",
 
   "category": "surface",
@@ -253,10 +254,12 @@ Direction: Server -> Client
 }
 ```
 
-#### RESULT (error)
-Type: text/json  
+### RESULT (error)
 Direction: Server -> Client
-```
+
+Sent from the server when the anaylse process finished with an error.
+
+```JSON
 {
   "version": 0,
   "type": 5,

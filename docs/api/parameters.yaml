@@ -203,6 +203,21 @@ newDataset:
     type:
       type: string
       description: Type of dataset.
+    files:
+      type: array
+      description: List of files that form that dataset.
+      items:
+        type: object
+        properties:
+          byte_size:
+            type: number
+            description: Size of the file in bytes.
+          crc:
+            type: string
+            description: Not used, always empty.
+          path_component:
+            type: string
+            description: Basename (without path) of the file.
 
 updateResource:
   in: body
