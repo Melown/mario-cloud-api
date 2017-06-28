@@ -5,8 +5,8 @@ You can upload custom data to our platform and use these resources in your maps.
 The following data is supported:
 
 - [GDAL raster data](http://www.gdal.org/formats_list.html)
-- VEF tilesets
-- tls tilesets
+- [VEF tilesets](https://github.com/Melown/true3d-format-spec)
+- [Agisoft TLS tilesets](http://www.agisoft.com/)
 
 ## Analysing your data
 
