@@ -5,7 +5,7 @@ You can upload custom data to our platform and use these resources in your maps.
 The following data is supported:
 
 - [GDAL raster data](http://www.gdal.org/formats_list.html)
-- [VEF tilesets](https://)
+- VEF tilesets
 - tls tilesets
 
 ## Analysing your data
