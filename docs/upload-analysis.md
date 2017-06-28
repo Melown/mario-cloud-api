@@ -74,13 +74,15 @@ After that header, the payload follows.
 
 ### Message types
 
-|Name                      |Value for `type` |JSON |binary |
-|--------------------------|-----------------|-----|-------|
-|[FILELIST](#filelist)     |0                |  X  |   X   |
-|[READ](#read)             |1                |     |   X   |
-|[BLOCK](#block)           |2                |     |   X   |
-|[ERROR](#error)           |3                |     |   X   |
-|[RESULT](#result-success) |5                |  X  |       |
+The following types of messages exist:
+
+|Name                      |Value for `type` |Direction        |JSON |binary |
+|--------------------------|-----------------|-----------------|-----|-------|
+|[FILELIST](#filelist)     |0                |Client -> Server |  X  |   X   |
+|[READ](#read)             |1                |Server -> Client |     |   X   |
+|[BLOCK](#block)           |2                |Client -> Server |     |   X   |
+|[ERROR](#error)           |3                |Client -> Server |     |   X   |
+|[RESULT](#result-success) |5                |Server -> Client |  X  |       |
 
 ### Error-codes
 
@@ -98,12 +100,8 @@ case an error occures while reading data from a file:
 ### FileList
 Direction: Client -> Server
 
-#### File
-
-|Offset |Length |Type   |Use                                  |
-|-------|-------|-------|-------------------------------------|
-|0      |1      |uint8  |`size`: length of file name in bytes |
-|1      |`size` |[char] |file name (utf8)                     |
+This message is sent to the server to inform the backend about the list of files
+to be uploaded.
 
 #### Fileinfo
 
@@ -115,12 +113,6 @@ Direction: Client -> Server
 |4      |_varies_ |`File` |list of `File`s                    |
 
 ```C
-struct File {
-  ubyte nameSize;         // file name size in bytes
-  char name[nameSize];    // file name (in utf8 format)
-  uint64 size;            // file size 64bit
-};
-
 Header.type = 0;          // filelist
 
 struct Fileinfo {
@@ -130,8 +122,25 @@ struct Fileinfo {
 };
 ```
 
+#### File
+
+|Offset |Length |Type   |Use                                  |
+|-------|-------|-------|-------------------------------------|
+|0      |1      |uint8  |`size`: length of file name in bytes |
+|1      |`size` |[char] |file name (utf8)                     |
+
+```C
+struct File {
+  ubyte nameSize;         // file name size in bytes
+  char name[nameSize];    // file name (in utf8 format)
+  uint64 size;            // file size 64bit
+};
+```
+
 ### READ
 Direction: Server -> Client
+
+Sent from the backend to request a chunk of a file.
 
 |Offset |Length |Type   |Use                           |Value |
 |-------|-------|-------|------------------------------|------|
@@ -156,6 +165,8 @@ struct Read {
 ### BLOCK
 Direction: Client -> Server
 
+Sent from the client to the server as a response to a [READ](#read)-message.
+
 |Offset |Length |Type    |Use                              |Value |
 |-------|-------|--------|---------------------------------|------|
 |0      |1      |uint8   |version                          |0     |
@@ -177,6 +188,8 @@ struct Block {
 ### ERROR
 Direction: Client -> Server
 
+Sent to the server in case an error occured during the processing of a [READ](#read)-message.
+
 |Offset |Length |Type   |Use                              |Value |
 |-------|-------|-------|---------------------------------|------|
 |0      |1      |uint8  |version                          |0     |
@@ -185,7 +198,7 @@ Direction: Client -> Server
 |6      |4      |uint32 |Error-code                       |      |
 
 ```C
-Header.type = 3;      // error
+Header.type = 3;        // error
 
 struct Error {
   struct Header header; // Header
@@ -197,6 +210,10 @@ struct Error {
 
 ### FileList
 Direction: Client -> Server
+
+This message is sent to the server to inform the backend about the list of files
+to be uploaded.
+
 ```JSON
 {
   "version": 0,
@@ -212,6 +229,9 @@ Direction: Client -> Server
 
 ### RESULT (success)
 Direction: Server -> Client
+
+Sent from the server when the anaylse process finished successful.
+
 ```JSON
 {
   "version": 0,
@@ -236,6 +256,9 @@ Direction: Server -> Client
 
 ### RESULT (error)
 Direction: Server -> Client
+
+Sent from the server when the anaylse process finished with an error.
+
 ```JSON
 {
   "version": 0,
