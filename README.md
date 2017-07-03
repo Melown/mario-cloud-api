@@ -1,4 +1,4 @@
-# Mario documentation
+# Mario REST API documentation
 Documentation for the mario cloud (console) API.
 
 ### Authorization process
@@ -11,13 +11,15 @@ see [docs/dataset-upload.md](docs/dataset-upload.md)
 ### API
 The API-documentation uses the OpenAPI Specification(OAS) and is packed together
 with the [swagger-ui](http://swagger.io/swagger-ui/). A customized version of
-swagger-ui can be found in this repository.
+swagger-ui can be found in this repository. To see HTML generated documentation
+directly, you can visit [Mario REST API](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Melown/mario-cloud-api/master/docs/api/index.yaml) directly.
 
 #### Installation
 Due to some specialities of the API, you need to follow the instructions here
 in case you want to test the API from within swagger-ui. If you are fine with just
 viewing it, you can of course just open [docs/api/index.yaml](docs/api/index.yaml)
-in your local copy of swagger-ui.
+in your local copy of swagger-ui, or you can visit the
+[Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Melown/mario-cloud-api/master/docs/api/index.yaml).
 
 The Mario Accounts-API expects an application-ID that is connected with a certain
 redirect-URL. We setup an application that redirects to `http://localhost/mario-api/oauth2-redirect.html` so you can use the documentation to test the API.
@@ -48,3 +50,9 @@ Now navigate your webbrowser to http://localhost/mario-api.
 
 After logged in in via swagger-ui, you should be able to use all API-methods from
 within swagger-ui.
+
+**Content:**
+
+* [Authorisation](docs/authorization.md)
+* [REST API usage](docs/rest-api-usage.md)
+* [Dataset upload](docs/dataset-upload.md)
