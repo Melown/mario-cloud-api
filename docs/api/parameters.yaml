@@ -104,7 +104,7 @@ datasetExport:
         type: string
         description: Additional description.
       zshift:
-        type: string
+        type: number
         description: If the dataset needs z-shifting, this is the value (in m).
 
 newMapConfig:
