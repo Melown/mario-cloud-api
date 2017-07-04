@@ -12,7 +12,7 @@ see [docs/dataset-upload.md](docs/dataset-upload.md)
 The API-documentation uses the OpenAPI Specification(OAS) and is packed together
 with the [swagger-ui](http://swagger.io/swagger-ui/). A customized version of
 swagger-ui can be found in this repository. To see HTML generated documentation
-directly, you can visit [Mario REST API](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Melown/mario-cloud-api/master/docs/api/index.yaml) directly.
+directly, you can visit [Mario REST API](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Melown/mario-cloud-api/master/docs/api/index.yaml) on swagger.
 
 #### Installation
 Due to some specialities of the API, you need to follow the instructions here
