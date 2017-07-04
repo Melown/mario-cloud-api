@@ -15,7 +15,7 @@ To use any Melown service API, you first need to obtain an Access token. The acc
 token binds your Melown service, client application and a specific user together.
 
 This Access token must be attached to any Melown service API call via a
-GET-parmeter, usually named `access_token`. Each access token is valid only for
+GET-method, usually named `access_token`. Each access token is valid only for
 a limited amount of time. When an access token expires, the API call is rejected
 and your app must obtain a new token.
 
@@ -25,7 +25,7 @@ To start the authenticaton process, do a GET-request to the following URL
 https://www.melown.com/accounts/auth/init
 ```
 
-with the follwing parameters:
+with the following parameters:
 
 |Name           |Description                              |Value |
 |---------------|-----------------------------------------|--------|
@@ -50,7 +50,7 @@ While doing so, the following parameters will be passed back to your app:
 |`state`        |The client app context data passed to Melown Accounts.||
 |`action`       |Action performed.                        |`accounts.signin`|
 
-In case an error occured, Melown Accounts will instead pass these parameters:
+In case an error occurred, Melown Accounts will instead pass these parameters:
 
 |Name         |Description        |
 |-------------|-------------------|
@@ -59,5 +59,7 @@ In case an error occured, Melown Accounts will instead pass these parameters:
 
 ### `client_id` and `redirect_uri`
 
-You obtain a `client_id` by contacting us. Please send an email to info@melown.com
-and tell us, what you are planning to do. In any case, please provide a `redirect_uri` (and include that in your email), to where we should redirect after a successful login.
+You obtain a `client_id` by contacting us. Please send an email to `info at melown dot com`
+and tell us, what you are planning to do. In any case, please provide a
+`redirect_uri` (and include that in your email), to where we should redirect
+after a successful login.
