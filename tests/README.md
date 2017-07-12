@@ -1,4 +1,4 @@
-# Mario REST API test
+# Melown cloud REST API test
 
 The system tests are written using Python programming language, [pytest test suite](https://docs.pytest.org/en/latest/) and [requests library](http://docs.python-requests.org/en/master/).
 

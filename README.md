@@ -1,5 +1,5 @@
-# Mario REST API documentation
-Documentation for the mario cloud (console) API.
+# Melown cloud REST API documentation
+Documentation for the Melown cloud (console) API.
 
 ### Authorization process
 see [docs/authorization.md](docs/authorization.md)
@@ -12,7 +12,7 @@ see [docs/dataset-upload.md](docs/dataset-upload.md)
 The API-documentation uses the OpenAPI Specification(OAS) and is packed together
 with the [swagger-ui](http://swagger.io/swagger-ui/). A customized version of
 swagger-ui can be found in this repository. To see HTML generated documentation
-directly, you can visit [Mario REST API](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Melown/mario-cloud-api/master/docs/api/index.yaml) on swagger.
+directly, you can visit [Melown cloud REST API](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Melown/mario-cloud-api/master/docs/api/index.yaml) on swagger.
 
 #### Installation
 Due to some specialities of the API, you need to follow the instructions here
@@ -21,20 +21,20 @@ viewing it, you can of course just open [docs/api/index.yaml](docs/api/index.yam
 in your local copy of swagger-ui, or you can visit the
 [Swagger editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Melown/mario-cloud-api/master/docs/api/index.yaml).
 
-The Mario Accounts-API expects an application-ID that is connected with a certain
-redirect-URL. We setup an application that redirects to `http://localhost/mario-api/oauth2-redirect.html` so you can use the documentation to test the API.
+The Melown cloud Accounts-API expects an application-ID that is connected with a certain
+redirect-URL. We setup an application that redirects to `http://localhost/melown-cloud-api/oauth2-redirect.html` so you can use the documentation to test the API.
 
 This means, you have to run a webserver, you have to run it on port 80, and you
-have to make swagger-ui available under the path `/mario-api`.
+have to make swagger-ui available under the path `/melown-cloud-api`.
 
-To do so, just copy (or link) the whole `mario-api`-folder into your webserver's
+To do so, just copy (or link) the whole `melown-cloud-api`-folder into your webserver's
 document-root. In case you are on windows, make sure you also copy the `docs`-folder
-(which is symlinked) into your `mario-api`-folder. All in all you should end up
+(which is symlinked) into your `melown-cloud-api`-folder. All in all you should end up
 with the following structure:
 
 ```
 ─ documentroot
-  └─ mario-api
+  └─ melown-cloud-api
      ├─ index.html
      ├─ swagger-ui-bundle.js
      ...
@@ -46,7 +46,7 @@ with the following structure:
            └─ index.yaml
 ```
 
-Now navigate your webbrowser to http://localhost/mario-api.
+Now navigate your webbrowser to http://localhost/melown-cloud-api.
 
 After logged in in via swagger-ui, you should be able to use all API-methods from
 within swagger-ui.

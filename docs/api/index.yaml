@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  title: Mario Console
+  title: Melown cloud
   version: '0.1.2'
-  description: 'Mario console-API.'
+  description: 'Melown cloud API.'
 schemes:
   - https
 host: www.test.mlwn.se
@@ -18,7 +18,7 @@ securityDefinitions:
     flow: implicit
     authorizationUrl: 'https://www.test.mlwn.se/accounts/auth/init'
     scopes:
-      MARIO_API: 'Mario-API'
+      MARIO_API: 'Melown-cloud-API'
 security:
   - melownAccounts: [MARIO_API]
 
