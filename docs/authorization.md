@@ -5,6 +5,9 @@
 The Melown Accounts service is based on the OAuth 2.0 framework.
 The following text assumes basic knowledge of OAuth 2.0.
 
+If, for any reason, you are not able to provide an OAuth 2.0-flow, please read
+how to [authorize via password](#authorization-via-password) below.
+
 In addition to OAuth 2.0, Melown Accounts adds support for multiple services.
 
 The general authorization process looks like this:
@@ -22,7 +25,7 @@ and your app must obtain a new token.
 To start the authenticaton process, do a GET-request to the following URL
 
 ```
-https://www.melown.com/accounts/auth/init
+https://www.melown.com/accounts/auth/init/
 ```
 
 with the following parameters:
@@ -63,3 +66,40 @@ You obtain a `client_id` by contacting us. Please send an email to `info at melo
 and tell us, what you are planning to do. In any case, please provide a
 `redirect_uri` (and include that in your email), to where we should redirect
 after a successful login.
+
+### Authorization via password
+
+In case the default authorization via OAuth 2.0 is not an option for you please
+contact us. We can enable your application for password authentication.
+
+To perform a login with email and password, do a `POST`-request to the following URL:
+
+```
+https://www.test.mlwn.se/accounts/auth/login/
+```
+
+with the GET-parameters `service_id`, `client_id`, `scopes` (see above) and a JSON-body
+containing an object with two properties `email` and `password`.
+
+When successful, you will receive a JSON object
+
+```json
+{
+  "result": "aaaaaabbbbbbcccccc"
+}
+```
+
+where `result` will be your access token.
+
+In case of an error, you will receive
+
+```json
+{
+  "error": {
+    "name": "Error",
+    "code":401,
+    "message":"Authorization failed"
+  }
+}
+```
+or similar.
