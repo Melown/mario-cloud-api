@@ -75,7 +75,7 @@ contact us. We can enable your application for password authentication.
 To perform a login with email and password, do a `POST`-request to the following URL:
 
 ```
-https://www.test.mlwn.se/accounts/auth/login/
+https://www.melown.com/accounts/auth/login/
 ```
 
 with the GET-parameters `service_id`, `client_id`, `scopes` (see above) and a JSON-body
